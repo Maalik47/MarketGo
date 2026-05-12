@@ -141,6 +141,57 @@
         nav a.active { color: var(--orange-700); }
         nav a.active::after { width: 100%; }
 
+        .        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: var(--gray-700);
+            cursor: pointer;
+            padding: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .hamburger:hover { color: var(--orange-600); }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 72px);
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(20px);
+            z-index: 99;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 24px;
+            gap: 8px;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .mobile-nav.open { display: flex; }
+
+        .mobile-nav a {
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 14px 24px;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav a:hover,
+        .mobile-nav a.active {
+            background: linear-gradient(135deg, var(--amber-50), #FFF3E0);
+            color: var(--orange-700);
+        }
+
         .header-actions {
             display: flex;
             align-items: center;
@@ -932,8 +983,11 @@
         }
 
         @media (max-width: 768px) {
-            header { padding: 0 20px; }
-            nav a:not(.btn-primary) { display: none; }
+            header { padding: 0 16px; }
+            nav { display: none; }
+            .hamburger { display: block; }
+            .header-actions { gap: 8px; }
+            .header-actions .btn-icon { width: 36px; height: 36px; font-size: 0.95rem; }
             .hero { padding: 60px 20px; }
             .hero h1 { font-size: 2rem; }
             .hero-stats { gap: 24px; flex-wrap: wrap; }
@@ -967,6 +1021,16 @@
             <a href="about.html" id="aboutNavLink">Sobre nosotros</a>
             <a href="#" id="sellNavBtn">Vender</a>
         </nav>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menú">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="#" class="active">Inicio</a>
+            <a href="#products">Productos</a>
+            <a href="about.html" id="aboutNavLinkMobile">Sobre nosotros</a>
+            <a href="#" id="sellNavBtnMobile">Vender</a>
+            <a href="#" id="loginBtnMobile" style="color:var(--orange-600);font-weight:700;">Iniciar sesión</a>
+        </div>
         <div class="header-actions">
             <div id="authDisplay" style="display:none;align-items:center;gap:10px;">
                 <span style="font-size:0.85rem;font-weight:600;color:var(--orange-700);" id="userNameDisplay"></span>
@@ -1670,12 +1734,65 @@
         if (productsSection) observer.observe(productsSection);
 
         // ============================================================
+        // MOBILE NAV
+        // ============================================================
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileNav = document.getElementById('mobileNav');
+
+        hamburgerBtn.addEventListener('click', () => {
+            const isOpen = mobileNav.classList.toggle('open');
+            hamburgerBtn.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+        });
+
+        mobileNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('open');
+                hamburgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Sync mobile nav login/register with desktop buttons
+        document.getElementById('loginBtnMobile').addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileNav.classList.remove('open');
+            hamburgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            document.body.style.overflow = '';
+            openLogin();
+        });
+
+        const sellNavBtnMobile = document.getElementById('sellNavBtnMobile');
+        sellNavBtnMobile.addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileNav.classList.remove('open');
+            hamburgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            document.body.style.overflow = '';
+            if (isLoggedIn()) { window.location.href = 'vender.html'; }
+            else { document.getElementById('sellNavBtn').click(); }
+        });
+
+        // Hide about link in mobile nav when logged in
+        function syncMobileAuth() {
+            const mobileAbout = document.getElementById('aboutNavLinkMobile');
+            const mobileLoginItem = document.getElementById('loginBtnMobile');
+            if (isLoggedIn()) {
+                if (mobileAbout) mobileAbout.style.display = 'none';
+                if (mobileLoginItem) mobileLoginItem.style.display = 'none';
+            } else {
+                if (mobileAbout) mobileAbout.style.display = '';
+                if (mobileLoginItem) mobileLoginItem.style.display = '';
+            }
+        }
+
+        // ============================================================
         // INIT
         // ============================================================
         renderFilterBar();
         renderProducts();
         updateCart();
         updateAuthUI();
+        syncMobileAuth();
     </script>
 </body>
 </html>
