@@ -123,6 +123,18 @@ app.post('/api/login', async (req, res) => {
 app.get('/api/me', auth, (req, res) => res.json({ user: req.user }));
 
 // ===================== PRODUCTS =====================
+app.get('/api/products/public', async (req, res) => {
+  try {
+    if (useSupabase) {
+      const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      res.json(data.map(mapProduct));
+    } else {
+      res.json(readJSON('products.json'));
+    }
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 app.get('/api/products', auth, async (req, res) => {
   try {
     if (useSupabase) {
@@ -143,13 +155,14 @@ app.post('/api/products', auth, async (req, res) => {
     if (useSupabase) {
       const { data, error } = await supabase.from('products').insert({
         user_id: req.user.id, name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc,
+        image: req.body.image || null,
         views: Math.floor(Math.random() * 400) + 10, simulated_sales: Math.floor(Math.random() * 30)
       }).select().single();
       if (error) throw error;
       res.json(mapProduct(data));
     } else {
       const products = readJSON('products.json');
-      const product = { id: Date.now(), userId: req.user.id, name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc, views: Math.floor(Math.random() * 400) + 10, simulatedSales: Math.floor(Math.random() * 30), createdAt: new Date().toISOString() };
+      const product = { id: Date.now(), userId: req.user.id, name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc, image: req.body.image || null, views: Math.floor(Math.random() * 400) + 10, simulatedSales: Math.floor(Math.random() * 30), createdAt: new Date().toISOString() };
       products.push(product);
       writeJSON('products.json', products);
       res.json(product);
@@ -163,14 +176,14 @@ app.put('/api/products/:id', auth, async (req, res) => {
     const { name, category, price, stock, desc } = req.body;
 
     if (useSupabase) {
-      const { data, error } = await supabase.from('products').update({ name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc }).eq('id', id).eq('user_id', req.user.id).select().single();
+      const { data, error } = await supabase.from('products').update({ name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc, image: req.body.image || null }).eq('id', id).eq('user_id', req.user.id).select().single();
       if (error || !data) return res.status(404).json({ error: 'Producto no encontrado' });
       res.json(mapProduct(data));
     } else {
       const products = readJSON('products.json');
       const idx = products.findIndex(p => p.id === id && p.userId === req.user.id);
       if (idx === -1) return res.status(404).json({ error: 'Producto no encontrado' });
-      Object.assign(products[idx], { name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc });
+      Object.assign(products[idx], { name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc, image: req.body.image || null });
       writeJSON('products.json', products);
       res.json(products[idx]);
     }
@@ -200,8 +213,8 @@ function mapProduct(p) {
   return {
     id: p.id, userId: p.user_id, name: p.name, category: p.category,
     price: p.price, stock: p.stock, desc: p.desc,
-    views: p.views, simulatedSales: p.simulated_sales,
-    createdAt: p.created_at
+    image: p.image, views: p.views, simulatedSales: p.simulated_sales,
+    sellerName: p.seller_name, createdAt: p.created_at
   };
 }
 

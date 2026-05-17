@@ -2,5 +2,10 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/(.*)", "destination": "/marketplace/$1" }
-  ]
+  ],
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "data/**"
+    }
+  }
 }
