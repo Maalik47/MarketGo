@@ -3,7 +3,7 @@
 -- Ejecutar en Supabase SQL Editor después de migration.sql
 -- ============================================================
 
-INSERT INTO products (user_id,name,category,price,stock,desc,image,views,simulated_sales,seller_name,created_at) VALUES
+INSERT INTO products (user_id,name,category,price,stock,"desc",image,views,simulated_sales,seller_name,created_at) VALUES
 (0,'Laptop Pro X1','Tecnología',5459958,10,'Potente laptop con procesador i9, 32GB RAM y SSD 1TB. Ideal para desarrollo y diseño.','https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=400&fit=crop',342,28,'MarketGo','2026-01-15T10:00:00.000Z'),
 (0,'Monitor UltraWide 34"','Tecnología',2519958,15,'Pantalla curva 21:9 WQHD 144Hz. Experiencia inmersiva para máxima productividad.','https://images.unsplash.com/photo-1527443222154-69f3a7450ee0?w=600&h=400&fit=crop',256,15,'MarketGo','2026-01-20T10:00:00.000Z'),
 (0,'Teclado Mecánico RGB','Tecnología',629958,30,'Switches Cherry MX Blue, retroiluminación RGB y construcción en aluminio.','https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&h=400&fit=crop',189,22,'MarketGo','2026-02-01T10:00:00.000Z'),
