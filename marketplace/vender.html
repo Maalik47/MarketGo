@@ -4,51 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vender — MarketGo</title>
+    <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="cinematic.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
     <style>
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-        :root {
-            --amber-50: #FFF8E1;
-            --amber-100: #FFECB3;
-            --amber-200: #FFE082;
-            --amber-300: #FFD54F;
-            --amber-400: #FFCA28;
-            --amber-500: #FFC107;
-            --amber-600: #FFB300;
-            --amber-700: #FFA000;
-            --orange-400: #FFA726;
-            --orange-500: #FF9800;
-            --orange-600: #FB8C00;
-            --orange-700: #F57C00;
-            --orange-800: #EF6C00;
-            --gray-50: #FAFAFA;
-            --gray-100: #F5F5F5;
-            --gray-200: #EEEEEE;
-            --gray-300: #E0E0E0;
-            --gray-400: #BDBDBD;
-            --gray-500: #9E9E9E;
-            --gray-600: #757575;
-            --gray-700: #616161;
-            --gray-800: #424242;
-            --gray-900: #212121;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 20px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
-            --shadow-xl: 0 20px 60px rgba(0,0,0,0.2);
-            --radius: 12px;
-            --radius-lg: 20px;
-        }
+
 
         html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--gray-50);
-            color: var(--gray-900);
+            background: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            padding-top: 72px;
         }
 
         @keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
@@ -57,20 +37,39 @@
         @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
         @keyframes slideInRight { from{transform:translateX(100%);opacity:0} to{transform:translateX(0);opacity:1} }
         @keyframes slideOutRight { from{transform:translateX(0);opacity:1} to{transform:translateX(100%);opacity:0} }
+        @keyframes typing { from{width:0} to{width:100%} }
+        @keyframes blink { 50%{border-color:transparent} }
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+        @keyframes pulseGlow { 0%,100%{box-shadow:0 4px 15px rgba(245,158,11,0.15)} 50%{box-shadow:0 4px 30px rgba(245,158,11,0.35)} }
+        @keyframes morphIn { 0%{opacity:0;transform:translateY(60px) scale(0.92) rotateX(6deg);filter:blur(3px)} 100%{opacity:1;transform:translateY(0) scale(1) rotateX(0);filter:blur(0)} }
+        @keyframes morphInLeft { 0%{opacity:0;transform:translateX(-60px) scale(0.95) rotateY(5deg);filter:blur(2px)} 100%{opacity:1;transform:translateX(0) scale(1) rotateY(0);filter:blur(0)} }
+        @keyframes morphInRight { 0%{opacity:0;transform:translateX(60px) scale(0.95) rotateY(-5deg);filter:blur(2px)} 100%{opacity:1;transform:translateX(0) scale(1) rotateY(0);filter:blur(0)} }
+        @keyframes scaleSpring { 0%{opacity:0;transform:scale(0.7)} 50%{transform:scale(1.06)} 70%{transform:scale(0.97)} 100%{opacity:1;transform:scale(1)} }
+        @keyframes revealClip { 0%{clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%);transform:translateY(25px)} 100%{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);transform:translateY(0)} }
+        @keyframes float3D { 0%,100%{transform:translateY(0) rotateY(0deg)} 33%{transform:translateY(-10px) rotateY(3deg)} 66%{transform:translateY(5px) rotateY(-1deg)} }
+        @keyframes textGradient { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        @keyframes glowPulse { 0%,100%{box-shadow:0 0 8px rgba(245,158,11,0.15)} 50%{box-shadow:0 0 30px rgba(245,158,11,0.4),0 0 80px rgba(245,158,11,0.1)} }
+        @keyframes card3D { 0%{opacity:0;transform:perspective(1200px) rotateY(20deg) rotateX(8deg) translateZ(-80px) scale(0.88)} 100%{opacity:1;transform:perspective(1200px) rotateY(0) rotateX(0) translateZ(0) scale(1)} }
+        @keyframes shimmerFlow { 0%{background-position:-200% center} 100%{background-position:200% center} }
+        @keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.025)} }
+        @keyframes countUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes slideDown { 0%{opacity:0;transform:translateY(-30px)} 100%{opacity:1;transform:translateY(0)} }
+        @keyframes ripple { to{transform:scale(4);opacity:0} }
+        /* Additional keyframes moved to cinematic.css */
 
         header {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--gray-200);
-            padding: 0 40px;
-            height: 72px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            animation: fadeInDown 0.6s ease;
+            background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border); padding: 0px 40px; height: 72px;
+            display: flex; align-items: center; justify-content: space-between; position: fixed;
+            top: 0; left: 0; right: 0; z-index: 100;
+            transform-origin: top; perspective: 1000px;
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+        }
+        header.header-scrolled {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border-hover);
+            box-shadow: var(--shadow-md);
         }
 
         .logo {
@@ -84,14 +83,14 @@
 
         .logo i {
             font-size: 1.6rem;
-            background: linear-gradient(135deg, var(--amber-500), var(--orange-600));
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .logo span {
-            background: linear-gradient(135deg, var(--amber-600), var(--orange-700));
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -101,7 +100,7 @@
 
         nav a {
             text-decoration: none;
-            color: var(--gray-700);
+            color: var(--text-secondary);
             font-weight: 500;
             font-size: 0.9rem;
             transition: color 0.3s ease;
@@ -115,14 +114,14 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, var(--amber-500), var(--orange-600));
+            background: linear-gradient(90deg, var(--accent), var(--accent));
             transition: width 0.3s ease;
             border-radius: 2px;
         }
 
-        nav a:hover { color: var(--orange-600); }
+        nav a:hover { color: var(--accent); }
         nav a:hover::after { width: 100%; }
-        nav a.active { color: var(--orange-700); }
+        nav a.active { color: var(--accent); }
         nav a.active::after { width: 100%; }
 
         .hamburger {
@@ -130,12 +129,12 @@
             background: none;
             border: none;
             font-size: 1.4rem;
-            color: var(--gray-700);
+            color: var(--text-secondary);
             cursor: pointer;
             padding: 8px;
             transition: color 0.3s ease;
         }
-        .hamburger:hover { color: var(--orange-600); }
+        .hamburger:hover { color: var(--accent); }
         .mobile-nav {
             display: none;
             position: fixed;
@@ -143,8 +142,9 @@
             left: 0;
             width: 100%;
             height: calc(100vh - 72px);
-            background: rgba(255,255,255,0.98);
-            backdrop-filter: blur(20px);
+            background: rgba(5, 5, 15, 0.98);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             z-index: 99;
             flex-direction: column;
             align-items: center;
@@ -155,7 +155,7 @@
         .mobile-nav.open { display: flex; }
         .mobile-nav a {
             text-decoration: none;
-            color: var(--gray-700);
+            color: var(--text-secondary);
             font-weight: 600;
             font-size: 1.1rem;
             padding: 14px 24px;
@@ -167,12 +167,13 @@
         }
         .mobile-nav a:hover,
         .mobile-nav a.active {
-            background: linear-gradient(135deg, var(--amber-50), #FFF3E0);
-            color: var(--orange-700);
+            background: var(--accent-soft);
+            color: var(--accent);
         }
 
+        /* ===== HERO ===== */
         .page-hero {
-            background: linear-gradient(135deg, var(--amber-50) 0%, #FFF3E0 50%, var(--amber-100) 100%);
+            background: transparent;
             padding: 64px 40px;
             text-align: center;
             position: relative;
@@ -184,8 +185,7 @@
             position: absolute;
             top: -50%; left: -50%;
             width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(255,193,7,0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(255,152,0,0.08) 0%, transparent 50%);
+            background: transparent;
             animation: gradientShift 15s ease infinite;
             background-size: 200% 200%;
         }
@@ -193,20 +193,40 @@
         .page-hero-content { position: relative; z-index: 1; }
         .page-hero h1 { font-size: 2.6rem; font-weight: 800; margin-bottom: 12px; }
         .page-hero h1 .highlight {
-            background: linear-gradient(135deg, var(--amber-600), var(--orange-700));
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .page-hero p { font-size: 1.05rem; color: var(--gray-500); max-width: 600px; margin: 0 auto; }
+        .page-hero p { font-size: 1.05rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+
+        .typing-container {
+            display: inline-block;
+            position: relative;
+        }
+
+        .typing-container::after {
+            content: '|';
+            position: absolute;
+            right: -4px;
+            top: 0;
+            color: var(--accent);
+            font-weight: 300;
+
+            animation: blink 0.8s step-end infinite;
+        }
+
+        .typing-container.done::after {
+            display: none;
+        }
 
         .section-line {
             width: 60px;
             height: 4px;
-            background: linear-gradient(90deg, var(--amber-500), var(--orange-600));
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
             border-radius: 4px;
             margin: 0 auto 8px;
-            animation: lineExpand 1s ease;
+            box-shadow: var(--shadow-md);
         }
 
         .btn-primary {
@@ -214,7 +234,7 @@
             padding: 12px 28px;
             border: none;
             border-radius: 8px;
-            background: linear-gradient(135deg, var(--amber-500), var(--orange-600));
+            background: var(--accent);
             color: white;
             font-weight: 600;
             font-size: 0.9rem;
@@ -222,20 +242,33 @@
             transition: all 0.3s ease;
             font-family: inherit;
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn-primary:hover::before { left: 100%; }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.35);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-outline {
             display: inline-block;
             padding: 12px 28px;
-            border: 2px solid var(--amber-500);
+            border: 1px solid var(--border);
             border-radius: 8px;
             background: transparent;
-            color: var(--orange-700);
+            color: var(--accent);
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
@@ -245,8 +278,9 @@
         }
 
         .btn-outline:hover {
-            background: var(--amber-50);
+            background: var(--accent-soft);
             transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(245,158,11,0.2);
         }
 
         .btn-danger {
@@ -267,8 +301,289 @@
             box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
         }
 
+        /* ===== PLANS ===== */
+        .plans-section {
+            padding: 60px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .plans-section h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .plans-section .plans-sub {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 36px;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .plan-card {
+            border-radius: var(--radius-lg);
+            padding: 36px 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 300%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.02), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .plan-card:hover::before { left: 100%; }
+
+        .plan-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+        .plan-card .plan-icon, .plan-card .plan-name, .plan-card .plan-price,
+        .plan-card .plan-period, .plan-card .plan-features, .plan-card .plan-btn {
+            transform:translateZ(20px); transform-style:preserve-3d;
+            transition:transform 0.3s ease;
+        }
+        .plan-card:hover .plan-icon { transform:translateZ(40px) scale(1.05); }
+        .plan-card:hover .plan-btn { transform:translateZ(30px); }
+        .plan-card:hover .plan-price { transform:translateZ(35px); }
+
+        .plan-card.popular {
+            border-color: var(--accent);
+            box-shadow: 0 0 25px rgba(245,158,11,0.2), 0 0 0 1px rgba(245,158,11,0.3);
+        }
+
+        .plan-card.popular::after {
+            content: 'MÁS POPULAR';
+            position: absolute;
+            top: 16px;
+            right: -32px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 36px;
+            transform: rotate(45deg);
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(245,158,11,0.25);
+        }
+
+        .plan-card .plan-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 1.6rem;
+        }
+
+        .plan-card .plan-icon.free {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+        }
+
+        .plan-card .plan-icon.platinum {
+            background: var(--accent-subtle);
+            color: var(--accent);
+        }
+
+        .plan-card .plan-icon.gold {
+            background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(249,115,22,0.15));
+            color: var(--accent);
+        }
+
+        .plan-card .plan-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .plan-card .plan-price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 4px;
+            text-shadow: 0 0 20px rgba(245,158,11,0.15);
+        }
+
+        .plan-card .plan-price span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .plan-card .plan-period {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .plan-card .plan-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .plan-card .plan-features li {
+            padding: 8px 0;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plan-card .plan-features li i { width: 18px; font-size: 0.85rem; }
+        .plan-card .plan-features li .check { color: var(--accent); }
+        .plan-card .plan-features li .cross { color: var(--text-tertiary); }
+        .plan-card .plan-features li .star { color: var(--accent); }
+
+        .plan-card .plan-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-card .plan-btn.free-btn {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+        }
+        .plan-card .plan-btn.free-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .plan-card .plan-btn.platinum-btn {
+            background: linear-gradient(135deg, var(--accent), #0099dd);
+            color: white;
+        }
+        .plan-card .plan-btn.platinum-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(245,158,11,0.3); }
+
+        .plan-card .plan-btn.gold-btn {
+            background: var(--accent);
+            color: white;
+        }
+        .plan-card .plan-btn.gold-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(245,158,11,0.3); }
+
+        .plan-card .plan-btn.active-plan {
+            background: #27ae60;
+            color: white;
+            cursor: default;
+        }
+        .plan-card .plan-btn.active-plan:hover { transform: none; box-shadow: none; }
+
+        .plan-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .plan-badge.destacado {
+            background: rgba(245,158,11,0.12);
+            color: var(--accent);
+        }
+
+        .plan-badge.premium {
+            background: var(--accent-subtle);
+            color: var(--accent);
+        }
+
         /* ===== DASHBOARD ===== */
-        .dashboard { padding: 60px 40px; max-width: 1100px; margin: 0 auto; }
+        .dashboard { padding: 0 40px 60px; max-width: 1100px; margin: 0 auto; }
+
+        .plan-banner {
+            border-radius: var(--radius-lg);
+            padding: 24px 32px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .plan-banner .plan-info { display: flex; align-items: center; gap: 16px; }
+        .plan-banner .plan-info i { font-size: 1.8rem; color: var(--accent); }
+        .plan-banner .plan-info .plan-label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .plan-banner .plan-info .plan-name-display {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .plan-banner .plan-progress { flex: 1; min-width: 200px; }
+        .plan-banner .plan-progress .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+        }
+        .plan-banner .plan-progress .progress-bar {
+            height: 8px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .plan-banner .plan-progress .progress-bar .progress-fill {
+            height: 100%;
+            border-radius: 8px;
+            background: linear-gradient(90deg, var(--accent), var(--accent));
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(245,158,11,0.3);
+        }
+        .plan-banner .plan-progress .progress-bar .progress-fill.warning {
+            background: linear-gradient(90deg, var(--accent), #e74c3c);
+        }
+        .plan-banner .plan-change-btn {
+            padding: 10px 20px;
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .plan-banner .plan-change-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 20px rgba(245,158,11,0.2);
+        }
 
         .dashboard-grid {
             display: grid;
@@ -278,23 +593,22 @@
         }
 
         .dash-card {
-            background: white;
             border-radius: var(--radius-lg);
             padding: 28px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
 
         .dash-card:hover {
             transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--amber-300);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
         }
 
         .dash-card i {
             font-size: 1.8rem;
-            background: linear-gradient(135deg, var(--amber-500), var(--orange-600));
+            background: linear-gradient(135deg, var(--accent), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -304,39 +618,33 @@
         .dash-card .number {
             font-size: 1.8rem;
             font-weight: 800;
-            color: var(--orange-700);
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(245,158,11,0.15);
         }
 
         .dash-card .label {
             font-size: 0.85rem;
-            color: var(--gray-500);
+            color: var(--text-secondary);
             margin-top: 2px;
         }
-
         .dash-card .sub {
             font-size: 0.78rem;
-            color: var(--gray-400);
+            color: var(--text-tertiary);
             margin-top: 4px;
         }
 
         /* ===== FORM ===== */
         .form-section {
-            background: white;
             border-radius: var(--radius-lg);
             padding: 36px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
             margin-bottom: 40px;
         }
 
-        .form-section h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
+        .form-section h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
         .form-section .form-sub {
-            color: var(--gray-500);
+            color: var(--text-secondary);
             font-size: 0.85rem;
             margin-bottom: 24px;
         }
@@ -348,17 +656,13 @@
             margin-bottom: 20px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
+        .form-group { display: flex; flex-direction: column; }
         .form-group.full { grid-column: 1 / -1; }
 
         .form-group label {
             font-size: 0.82rem;
             font-weight: 600;
-            color: var(--gray-700);
+            color: var(--accent);
             margin-bottom: 6px;
         }
 
@@ -366,20 +670,21 @@
         .form-group select,
         .form-group textarea {
             padding: 11px 14px;
-            border: 1px solid var(--gray-300);
+            border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 0.9rem;
             font-family: inherit;
-            transition: border-color 0.3s ease;
-            background: white;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(5, 5, 15, 0.7);
+            color: var(--text-primary);
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--amber-500);
-            box-shadow: 0 0 0 3px rgba(255,193,7,0.15);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(245,158,11,0.15), 0 0 25px rgba(245,158,11,0.08);
         }
 
         .form-group textarea {
@@ -387,11 +692,7 @@
             min-height: 80px;
         }
 
-        .form-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 8px;
-        }
+        .form-actions { display: flex; gap: 12px; margin-top: 8px; }
 
         /* ===== PRODUCT LIST ===== */
         .list-header {
@@ -400,14 +701,10 @@
             align-items: center;
             margin-bottom: 20px;
         }
-
         .list-header h3 { font-size: 1.2rem; font-weight: 700; }
-        .list-header span { font-size: 0.85rem; color: var(--gray-500); }
+        .list-header span { font-size: 0.85rem; color: var(--text-secondary); }
 
-        .product-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+        .product-table { width: 100%; border-collapse: collapse; }
 
         .product-table th {
             text-align: left;
@@ -415,47 +712,60 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--gray-500);
+            color: var(--text-tertiary);
             padding: 12px 16px;
-            border-bottom: 2px solid var(--gray-200);
+            border-bottom: 1px solid var(--border);
         }
 
         .product-table td {
             padding: 14px 16px;
-            border-bottom: 1px solid var(--gray-100);
+            border-bottom: 1px solid var(--border);
             font-size: 0.88rem;
             vertical-align: middle;
         }
 
-        .product-table tr:hover td {
-            background: var(--amber-50);
-        }
+        .product-table tr:hover td { background: rgba(245,158,11,0.03); }
 
         .product-table .prod-icon {
             width: 38px;
             height: 38px;
             border-radius: 8px;
-            background: linear-gradient(135deg, var(--amber-50), #FFF3E0);
+            background: rgba(245,158,11,0.08);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: var(--orange-600);
+            color: var(--accent);
             font-size: 1rem;
         }
 
-        .product-table .prod-name {
-            font-weight: 600;
-        }
-
+        .product-table .prod-name { font-weight: 600; }
         .product-table .prod-cat {
             font-size: 0.78rem;
-            color: var(--gray-400);
+            color: var(--text-secondary);
         }
 
-        .table-actions {
-            display: flex;
-            gap: 8px;
+        .product-table .prod-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-left: 8px;
         }
+
+        .product-table .prod-badge.destacado {
+            background: rgba(245,158,11,0.12);
+            color: var(--accent);
+        }
+
+        .product-table .prod-badge.premium {
+            background: var(--accent-subtle);
+            color: var(--accent);
+        }
+
+        .table-actions { display: flex; gap: 8px; }
 
         .btn-sm {
             padding: 6px 12px;
@@ -469,35 +779,27 @@
         }
 
         .btn-sm-edit {
-            background: var(--amber-50);
-            color: var(--orange-700);
+            background: rgba(245,158,11,0.08);
+            color: var(--accent);
         }
-
-        .btn-sm-edit:hover {
-            background: var(--amber-200);
-        }
+        .btn-sm-edit:hover { background: rgba(245,158,11,0.15); }
 
         .btn-sm-delete {
-            background: #fdf0ef;
-            color: #e74c3c;
+            background: rgba(249,115,22,0.08);
+            color: var(--accent);
         }
-
-        .btn-sm-delete:hover {
-            background: #fadbd8;
-        }
+        .btn-sm-delete:hover { background: rgba(249,115,22,0.15); }
 
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: var(--gray-400);
+            color: var(--text-tertiary);
         }
-
         .empty-state i {
             font-size: 3rem;
             margin-bottom: 12px;
-            color: var(--gray-300);
+            color: var(--text-tertiary);
         }
-
         .empty-state p { font-size: 0.95rem; }
 
         .toast-container {
@@ -516,21 +818,24 @@
             gap: 12px;
             padding: 14px 20px;
             border-radius: 10px;
-            background: white;
-            box-shadow: var(--shadow-md);
-            border-left: 4px solid var(--orange-500);
+            background: rgba(10, 10, 30, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0,0,0,0.4), 0 0 40px rgba(245,158,11,0.04);
+            border-left: 4px solid var(--accent);
             animation: slideInRight 0.4s ease;
             min-width: 300px;
             max-width: 420px;
         }
-
-        .toast i { font-size: 1.2rem; color: var(--orange-600); }
-        .toast span { font-size: 0.9rem; font-weight: 500; }
+        .toast i { font-size: 1.2rem; color: var(--accent); }
+        .toast span { font-size: 0.9rem; font-weight: 500; color: var(--text-primary); }
 
         footer {
-            background: var(--gray-900);
-            color: var(--gray-400);
-            padding: 48px 40px 32px;
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            padding: 60px 40px 32px;
+            margin-top: 80px;
+            border-top: 1px solid var(--border);
         }
 
         .footer-grid {
@@ -544,30 +849,95 @@
         .footer-brand .logo { margin-bottom: 12px; }
         .footer-brand p { font-size: 0.85rem; line-height: 1.6; }
 
-        .footer-col h4 { color: white; font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
+        .footer-col h4 { color: var(--text-primary); font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
 
         .footer-col a {
             display: block;
-            color: var(--gray-400);
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.85rem;
             margin-bottom: 10px;
             transition: color 0.3s ease;
         }
-
-        .footer-col a:hover { color: var(--amber-400); }
+        .footer-col a:hover { color: var(--accent); }
 
         .footer-bottom {
             max-width: 1100px;
             margin: 32px auto 0;
             padding-top: 20px;
-            border-top: 1px solid var(--gray-800);
+            border-top: 1px solid rgba(245, 158, 11, 0.08);
             display: flex;
             justify-content: space-between;
             font-size: 0.8rem;
         }
 
+        /* ===== ANIMATION HELPERS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .counter-value {
+            display: inline-block;
+        }
+
+        .btn-primary, .btn-outline, .plan-card .plan-btn { position:relative; overflow:hidden; }
+
+        /* Override inline styles for the new publish form */
+        #productForm input:focus,
+        #productForm select:focus,
+        #productForm textarea:focus {
+            border-color: var(--accent) !important;
+            background: #FFFCF4 !important;
+            box-shadow: 0 0 0 4px rgba(245,166,35,0.1) !important;
+        }
+        #productForm .counter:focus-within {
+            border-color: var(--accent) !important;
+            background: #FFFCF4 !important;
+            box-shadow: 0 0 0 4px rgba(245,166,35,0.1) !important;
+        }
+        #dropzone:hover {
+            border-color: var(--accent) !important;
+            background: #FFFCF4 !important;
+        }
+        #dropzone:hover #uploadIcon {
+            border-color: var(--accent) !important;
+            box-shadow: 0 4px 16px rgba(245,158,11,0.18) !important;
+            transform: translateY(-2px);
+        }
+        #formSubmitBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(200,132,26,0.38) !important;
+        }
+        #formCancelBtn:hover {
+            border-color: #C4BFB6 !important;
+            color: var(--text-primary) !important;
+            background: var(--bg-elevated) !important;
+        }
+        .ripple-overlay {
+            position:absolute; border-radius:50%; background:rgba(255,255,255,0.25);
+            width:100px; height:100px; transform:translate(-50%,-50%) scale(0);
+            animation:ripple 0.5s ease-out forwards; pointer-events:none;
+        }
+        .plan-card, .dash-card { transform-style:preserve-3d; perspective:1000px; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 200;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            backdrop-filter: blur(4px); padding: 20px;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
         @media (max-width: 1024px) {
+            .plans-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
             .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
             .form-row { grid-template-columns: 1fr; }
             .product-table { font-size: 0.85rem; }
@@ -580,14 +950,16 @@
             .hamburger { display: block; }
             .page-hero { padding: 48px 20px; }
             .page-hero h1 { font-size: 1.8rem; }
-            .dashboard { padding: 40px 20px; }
+            .plans-section { padding: 40px 20px; }
+            .plans-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+            .dashboard { padding: 0 20px 40px; }
             .dashboard-grid { grid-template-columns: 1fr; }
             .form-section { padding: 24px; }
             .product-table thead { display: none; }
             .product-table tr {
                 display: block;
                 padding: 16px;
-                border-bottom: 1px solid var(--gray-100);
+                border-bottom: 1px solid rgba(245,158,11,0.04);
             }
             .product-table td {
                 display: flex;
@@ -599,16 +971,19 @@
             .product-table td::before {
                 content: attr(data-label);
                 font-weight: 600;
-                color: var(--gray-500);
+                color: var(--text-secondary);
                 font-size: 0.78rem;
             }
             .table-actions { justify-content: flex-end; }
+            .plan-banner { flex-direction: column; text-align: center; }
+            .plan-banner .plan-info { flex-direction: column; text-align: center; }
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
         }
     </style>
 </head>
 <body>
+    <div id="three-canvas"></div>
 
     <header>
         <a href="index.html" class="logo">
@@ -632,7 +1007,7 @@
             <a href="index.html">Volver</a>
         </div>
         <div class="header-actions">
-            <a href="index.html" class="btn-outline" style="padding:8px 20px;font-size:0.82rem;text-decoration:none;">
+            <a href="index.html" class="btn-primary" style="padding:8px 20px;font-size:0.82rem;text-decoration:none;">
                 <i class="fas fa-store-alt"></i> Tienda
             </a>
         </div>
@@ -641,82 +1016,258 @@
     <main>
         <section class="page-hero">
             <div class="page-hero-content">
-                <h1>Panel de <span class="highlight">Vendedor</span></h1>
-                <p>Publica y gestiona tus productos en MarketGo. Todo el control de tu tienda en un solo lugar.</p>
+                <h1>Vende en <span class="highlight">MarketGo</span></h1>
+                <p>Elige tu plan y empieza a publicar tus productos. Llega a miles de compradores en Bucaramanga y toda Colombia.</p>
             </div>
         </section>
 
-        <section class="dashboard">
-            <div class="dashboard-grid" id="statsGrid">
-                <div class="dash-card">
-                    <i class="fas fa-box"></i>
-                    <div class="number" id="statProducts">0</div>
-                    <div class="label">Productos publicados</div>
-                    <div class="sub">en tu tienda</div>
+        <!-- ===== PLANS ===== -->
+        <section class="plans-section" id="plansSection">
+            <h2 class="reveal">Planes para vendedores</h2>
+            <div class="section-line reveal"></div>
+            <p class="plans-sub reveal">Elige el plan que mejor se adapte a tu negocio. Mientras más alto el plan, más exposición tienen tus productos.</p>
+
+            <div class="plans-grid">
+                <!-- GRATIS -->
+                <div class="plan-card" data-plan="gratis">
+                    <div class="plan-icon free"><i class="fas fa-gift"></i></div>
+                    <div class="plan-name">Gratis</div>
+                    <div class="plan-price">$0 <span></span></div>
+                    <div class="plan-period">Siempre gratis</div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check check"></i> <strong>5 productos</strong> mensuales</li>
+                        <li><i class="fas fa-check check"></i> Listado en resultados de búsqueda</li>
+                        <li><i class="fas fa-check check"></i> Panel de control básico</li>
+                        <li><i class="fas fa-times cross"></i> Productos destacados</li>
+                        <li><i class="fas fa-times cross"></i> Badge de verificado</li>
+                        <li><i class="fas fa-times cross"></i> Soporte prioritario</li>
+                    </ul>
+                    <button class="plan-btn free-btn" onclick="selectPlan('gratis')" id="planBtn-gratis">Seleccionar Gratis</button>
                 </div>
-                <div class="dash-card">
-                    <i class="fas fa-eye"></i>
-                    <div class="number" id="statViews">0</div>
-                    <div class="label">Vistas totales</div>
-                    <div class="sub">últimos 30 días</div>
+
+                <!-- PLATINO -->
+                <div class="plan-card popular" data-plan="platino">
+                    <div class="plan-icon platinum"><i class="fas fa-gem"></i></div>
+                    <div class="plan-name">Platino</div>
+                    <div class="plan-price">$49,900 <span>/mes</span></div>
+                    <div class="plan-period">Facturación mensual</div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check check"></i> <strong>10 productos</strong> mensuales</li>
+                        <li><i class="fas fa-check check"></i> Listado en resultados de búsqueda</li>
+                        <li><i class="fas fa-check check"></i> Panel de control completo</li>
+                        <li><i class="fas fa-star star"></i> <strong>Productos destacados</strong> — aparecen antes en búsquedas</li>
+                        <li><i class="fas fa-star star"></i> Badge <span class="plan-badge destacado">Destacado</span> en tus productos</li>
+                        <li><i class="fas fa-times cross"></i> Soporte prioritario</li>
+                    </ul>
+                    <button class="plan-btn platinum-btn" onclick="selectPlan('platino')" id="planBtn-platino">Seleccionar Platino</button>
                 </div>
-                <div class="dash-card">
-                    <i class="fas fa-shopping-cart"></i>
-                    <div class="number" id="statSales">0</div>
-                    <div class="label">Ventas simuladas</div>
-                    <div class="sub">totales estimados</div>
+
+                <!-- GOLD -->
+                <div class="plan-card" data-plan="gold">
+                    <div class="plan-icon gold"><i class="fas fa-crown"></i></div>
+                    <div class="plan-name">Gold</div>
+                    <div class="plan-price">$99,900 <span>/mes</span></div>
+                    <div class="plan-period">Facturación mensual</div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check check"></i> <strong>35 productos</strong> mensuales</li>
+                        <li><i class="fas fa-check check"></i> Listado en resultados de búsqueda</li>
+                        <li><i class="fas fa-check check"></i> Panel de control completo</li>
+                        <li><i class="fas fa-star star"></i> <strong>Máxima exposición</strong> — tus productos aparecen primero</li>
+                        <li><i class="fas fa-star star"></i> Badge <span class="plan-badge premium">Premium</span> en todos tus productos</li>
+                        <li><i class="fas fa-check check"></i> Soporte prioritario</li>
+                    </ul>
+                    <button class="plan-btn gold-btn" onclick="selectPlan('gold')" id="planBtn-gold">Seleccionar Gold</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DASHBOARD ===== -->
+        <section class="dashboard" id="dashboardSection">
+            <div class="plan-banner" id="planBanner">
+                <div class="plan-info">
+                    <i id="planIcon" class="fas fa-gift" style="color:var(--accent);"></i>
+                    <div>
+                        <div class="plan-label">Plan actual</div>
+                        <div class="plan-name-display" id="planNameDisplay">Gratis</div>
+                    </div>
+                </div>
+                <div class="plan-progress">
+                    <div class="progress-text">
+                        <span id="progressUsed">0</span>
+                        <span id="progressLimit">de 5 productos</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width:0%;"></div>
+                    </div>
+                </div>
+                <button class="plan-change-btn" onclick="document.getElementById('plansSection').scrollIntoView({behavior:'smooth'})">
+                    <i class="fas fa-arrow-up"></i> Cambiar plan
+                </button>
+            </div>
+
+            <div class="form-section" id="formSection" style="padding:0;overflow:hidden;border:none;box-shadow:none;background:transparent;">
+                <div style="width:100%;background:var(--surface, #FFFFFF);border-radius:28px;box-shadow:0 20px 60px rgba(26,24,20,0.12);border:1px solid var(--border);overflow:hidden;">
+                    <div style="padding:48px 52px 40px;background:linear-gradient(135deg,#FFFDF7 0%,#FFF8EC 100%);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:20px;">
+                        <div>
+                            <div style="display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-secondary);margin-bottom:12px;">
+                                <span style="width:20px;height:2px;background:var(--accent);border-radius:1px;display:inline-block;"></span>
+                                Marketplace
+                            </div>
+                            <h1 id="formTitle" style="font-family:'Space Grotesk','Clash Display',sans-serif;font-size:34px;font-weight:900;color:var(--text-primary);letter-spacing:-0.02em;line-height:1.1;margin:0;">Publicar <em style="font-style:italic;color:var(--accent-secondary);">nuevo</em><br>producto</h1>
+                            <p style="margin-top:8px;font-size:14px;color:var(--text-tertiary);font-weight:300;">Completa los datos para añadir tu producto al marketplace.</p>
+                        </div>
+                        <div style="flex-shrink:0;width:56px;height:56px;background:var(--accent);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 20px rgba(245,158,11,0.3);">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                        </div>
+                    </div>
+
+                    <form id="productForm" style="padding:44px 52px 52px;display:flex;flex-direction:column;gap:32px;">
+                        <div style="font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted, #9A9490);display:flex;align-items:center;gap:10px;">
+                            Información básica
+                            <span style="content:'';flex:1;height:1px;background:var(--border);"></span>
+                        </div>
+
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                            <div style="display:flex;flex-direction:column;gap:8px;">
+                                <label for="prodName" style="font-size:12px;font-weight:600;color:var(--text-soft, #6B6560);letter-spacing:0.04em;display:flex;align-items:center;gap:5px;">
+                                    Nombre del producto <span style="color:var(--accent);font-size:14px;line-height:1;">*</span>
+                                </label>
+                                <div style="position:relative;">
+                                    <svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--text-muted, #9A9490);pointer-events:none;" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                                        <rect x="3" y="3" width="14" height="14" rx="3"/><path d="M7 7h6M7 10h4"/>
+                                    </svg>
+                                    <input type="text" id="prodName" placeholder="Ej. Laptop Pro X1" required style="width:100%;font-family:'Inter',sans-serif;font-size:14.5px;font-weight:400;color:var(--text-primary);background:var(--bg-elevated);border:1.5px solid var(--border);border-radius:16px;outline:none;transition:all 0.22s ease;appearance:none;height:52px;padding:0 16px 0 46px;">
+                                </div>
+                            </div>
+
+                            <div style="display:flex;flex-direction:column;gap:8px;">
+                                <label for="prodCategory" style="font-size:12px;font-weight:600;color:var(--text-soft, #6B6560);letter-spacing:0.04em;display:flex;align-items:center;gap:5px;">
+                                    Categoría <span style="color:var(--accent);font-size:14px;line-height:1;">*</span>
+                                </label>
+                                <div style="position:relative;">
+                                    <svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--text-muted, #9A9490);pointer-events:none;" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                                        <path d="M4 6h12M6 10h8M8 14h4"/>
+                                    </svg>
+                                    <select id="prodCategory" required style="width:100%;font-family:'Inter',sans-serif;font-size:14.5px;font-weight:400;color:var(--text-primary);background:var(--bg-elevated);border:1.5px solid var(--border);border-radius:16px;outline:none;transition:all 0.22s ease;appearance:none;height:52px;padding:0 46px 0 46px;">
+                                        <option value="" disabled selected>Seleccionar categoría…</option>
+                                        <option value="Tecnología">Tecnología</option>
+                                        <option value="Moda">Moda</option>
+                                        <option value="Hogar">Hogar</option>
+                                        <option value="Deportes">Deportes</option>
+                                        <option value="Salud">Salud</option>
+                                        <option value="Libros">Libros</option>
+                                        <option value="Otra">Otra</option>
+                                    </select>
+                                    <svg style="position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-muted, #9A9490);" width="12" height="7" viewBox="0 0 12 7" fill="none">
+                                        <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted, #9A9490);display:flex;align-items:center;gap:10px;">
+                            Precio y disponibilidad
+                            <span style="content:'';flex:1;height:1px;background:var(--border);"></span>
+                        </div>
+
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                            <div style="display:flex;flex-direction:column;gap:8px;">
+                                <label for="prodPrice" style="font-size:12px;font-weight:600;color:var(--text-soft, #6B6560);letter-spacing:0.04em;display:flex;align-items:center;gap:5px;">
+                                    Precio <span style="color:var(--accent);font-size:14px;line-height:1;">*</span>
+                                </label>
+                                <div style="position:relative;">
+                                    <div style="position:absolute;left:0;top:0;bottom:0;width:50px;background:var(--accent);border-radius:14px 0 0 14px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk','Clash Display',sans-serif;font-weight:700;font-size:15px;color:white;pointer-events:none;z-index:1;">COP</div>
+                                    <input type="number" id="prodPrice" placeholder="5.000.000" min="0" required style="width:100%;font-family:'Inter',sans-serif;font-size:14.5px;font-weight:400;color:var(--text-primary);background:var(--bg-elevated);border:1.5px solid var(--border);border-radius:16px;outline:none;transition:all 0.22s ease;appearance:none;height:52px;padding:0 16px 0 64px;">
+                                </div>
+                            </div>
+
+                            <div style="display:flex;flex-direction:column;gap:8px;">
+                                <label style="font-size:12px;font-weight:600;color:var(--text-soft, #6B6560);letter-spacing:0.04em;display:flex;align-items:center;gap:5px;">
+                                    Cantidad en stock <span style="color:var(--accent);font-size:14px;line-height:1;">*</span>
+                                </label>
+                                <div style="display:flex;align-items:center;background:var(--bg-elevated);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;height:52px;transition:all 0.22s ease;">
+                                    <button type="button" onclick="changeQty(-1)" style="width:52px;height:52px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-muted, #9A9490);font-size:20px;font-weight:300;transition:all 0.18s;flex-shrink:0;">−</button>
+                                    <input type="number" id="prodStock" value="1" min="1" style="flex:1;border:none;background:transparent;text-align:center;font-size:16px;font-weight:600;color:var(--text-primary);height:52px;padding:0;border-radius:0;outline:none;font-family:'Inter',sans-serif;">
+                                    <button type="button" onclick="changeQty(1)" style="width:52px;height:52px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-muted, #9A9490);font-size:20px;font-weight:300;transition:all 0.18s;flex-shrink:0;">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted, #9A9490);display:flex;align-items:center;gap:10px;">
+                            Descripción
+                            <span style="content:'';flex:1;height:1px;background:var(--border);"></span>
+                        </div>
+
+                        <div style="display:flex;flex-direction:column;gap:8px;">
+                            <label for="prodDesc" style="font-size:12px;font-weight:600;color:var(--text-soft, #6B6560);letter-spacing:0.04em;display:flex;align-items:center;gap:5px;">
+                                Descripción del producto
+                            </label>
+                            <div style="position:relative;">
+                                <svg style="position:absolute;left:16px;top:16px;width:18px;height:18px;color:var(--text-muted, #9A9490);pointer-events:none;" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                                    <path d="M4 5h12M4 9h12M4 13h8"/>
+                                </svg>
+                                <textarea id="prodDesc" placeholder="Describe tu producto: características, estado, accesorios incluidos, motivo de venta…" required style="width:100%;font-family:'Inter',sans-serif;font-size:14.5px;font-weight:400;color:var(--text-primary);background:var(--bg-elevated);border:1.5px solid var(--border);border-radius:16px;outline:none;transition:all 0.22s ease;padding:14px 16px 14px 46px;min-height:120px;resize:vertical;line-height:1.65;"></textarea>
+                            </div>
+                        </div>
+
+                        <div style="font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted, #9A9490);display:flex;align-items:center;gap:10px;">
+                            Imagen
+                            <span style="content:'';flex:1;height:1px;background:var(--border);"></span>
+                        </div>
+
+                        <div style="display:flex;flex-direction:column;gap:8px;">
+                            <label style="font-size:12px;font-weight:600;color:var(--text-soft, #6B6560);letter-spacing:0.04em;display:flex;align-items:center;gap:5px;">
+                                Imagen del producto
+                            </label>
+                            <div id="dropzone" style="border:2px dashed var(--border);border-radius:16px;background:var(--bg-elevated);padding:36px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:all 0.25s ease;position:relative;text-align:center;">
+                                <input type="file" id="prodImage" accept="image/*" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:none;background:transparent;padding:0;border-radius:0;">
+                                <img id="imagePreview" src="" alt="Vista previa" style="width:96px;height:96px;object-fit:cover;border-radius:12px;border:2px solid var(--accent);display:none;">
+                                <div id="uploadIcon" style="width:52px;height:52px;background:white;border:1.5px solid var(--border);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 2px 12px rgba(26,24,20,0.06);transition:all 0.2s;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted, #9A9490);"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                </div>
+                                <p id="uploadLabel" style="font-size:14px;color:var(--text-soft, #6B6560);margin:0;"><strong style="color:var(--accent-secondary);font-weight:600;">Haz clic</strong> o arrastra una imagen</p>
+                                <p id="uploadHint" style="font-size:12px;color:var(--text-muted, #9A9490);margin:0;">PNG, JPG o WEBP — Máximo 5 MB</p>
+                                <p id="fileName" style="font-size:12px;color:var(--accent-secondary);font-weight:500;margin:0;display:none;"></p>
+                            </div>
+                        </div>
+
+                        <div style="height:1px;background:var(--border);margin:4px 0;"></div>
+
+                        <div style="display:flex;align-items:center;gap:14px;padding-top:8px;">
+                            <button type="button" id="formCancelBtn" style="display:none;height:52px;padding:0 24px;background:transparent;border:1.5px solid var(--border);border-radius:16px;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:var(--text-soft, #6B6560);cursor:pointer;transition:all 0.2s;">Cancelar</button>
+                            <button type="submit" id="formSubmitBtn" style="flex:1;height:52px;background:linear-gradient(135deg,var(--accent),var(--accent-secondary));border:none;border-radius:16px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:white;cursor:pointer;transition:all 0.25s ease;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:0.01em;box-shadow:0 6px 20px rgba(200,132,26,0.3);position:relative;overflow:hidden;">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7-7 7 7"/></svg>
+                                <span>Publicar producto</span>
+                            </button>
+                            <div style="margin-left:auto;display:flex;align-items:center;gap:5px;">
+                                <span style="width:20px;height:7px;border-radius:3.5px;background:var(--accent);transition:all 0.3s;"></span>
+                                <span style="width:7px;height:7px;border-radius:50%;background:var(--border);transition:all 0.3s;"></span>
+                                <span style="width:7px;height:7px;border-radius:50%;background:var(--border);transition:all 0.3s;"></span>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
-            <div class="form-section" id="formSection">
-                <h3 id="formTitle">Publicar nuevo producto</h3>
-                <p class="form-sub">Completa los datos para añadir tu producto al marketplace.</p>
-
-                <form id="productForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="prodName">Nombre del producto</label>
-                            <input type="text" id="prodName" placeholder="Ej. Laptop Pro X1" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="prodCategory">Categoría</label>
-                            <select id="prodCategory" required>
-                                <option value="">Seleccionar...</option>
-                                <option value="Tecnología">Tecnología</option>
-                                <option value="Moda">Moda</option>
-                                <option value="Hogar">Hogar</option>
-                                <option value="Deportes">Deportes</option>
-                                <option value="Salud">Salud</option>
-                                <option value="Libros">Libros</option>
-                                <option value="Otra">Otra</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="prodPrice">Precio (COP)</label>
-                            <input type="number" id="prodPrice" placeholder="Ej. 5000000" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="prodStock">Cantidad en stock</label>
-                            <input type="number" id="prodStock" placeholder="Ej. 10" min="1" value="1" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group full">
-                            <label for="prodDesc">Descripción</label>
-                            <textarea id="prodDesc" placeholder="Describe tu producto, características, estado, etc." required></textarea>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn-primary" id="formSubmitBtn">
-                            <i class="fas fa-plus"></i> Publicar producto
-                        </button>
-                        <button type="button" class="btn-outline" id="formCancelBtn" style="display:none;">
-                            Cancelar
-                        </button>
-                    </div>
-                </form>
+            <div class="dashboard-grid" id="statsGrid">
+                <div class="dash-card reveal">
+                    <i class="fas fa-box"></i>
+                    <div class="number"><span class="counter-value" id="statProducts">0</span></div>
+                    <div class="label">Productos publicados</div>
+                    <div class="sub">en tu tienda</div>
+                </div>
+                <div class="dash-card reveal">
+                    <i class="fas fa-eye"></i>
+                    <div class="number"><span class="counter-value" id="statViews">0</span></div>
+                    <div class="label">Vistas totales</div>
+                    <div class="sub">últimos 30 días</div>
+                </div>
+                <div class="dash-card reveal">
+                    <i class="fas fa-shopping-cart"></i>
+                    <div class="number"><span class="counter-value" id="statSales">0</span></div>
+                    <div class="label">Ventas simuladas</div>
+                    <div class="sub">totales estimados</div>
+                </div>
             </div>
 
             <div>
@@ -772,10 +1323,9 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        const API = '/api';
+        const API = window.location.protocol === 'file:' ? 'http://localhost:3000/api' : '/api';
 
         function getToken() { return localStorage.getItem('mg_token'); }
-        function getUser() { return JSON.parse(localStorage.getItem('mg_user') || 'null'); }
 
         async function apiCall(path, options = {}) {
             const token = getToken();
@@ -787,232 +1337,426 @@
             return data;
         }
 
+        let editId = null;
+        let products = [];
+
         const CATEGORY_ICONS = {
             Tecnología: 'fa-microchip', Moda: 'fa-tshirt', Hogar: 'fa-home',
             Deportes: 'fa-running', Salud: 'fa-heartbeat', Libros: 'fa-book', Otra: 'fa-tag'
         };
 
-        let editId = null;
-        let products = [];
-
         function formatPrice(num) {
             return '$' + Number(num).toLocaleString('es-CO');
         }
 
-        // ============================================================
-        // HIDE ABOUT LINK WHEN LOGGED IN
-        if (getToken()) {
-            const al = document.getElementById('aboutNavLink');
-            if (al) al.style.display = 'none';
+        function renderDashboard() {
+            const used = products.length;
+            const views = products.reduce((s, p) => s + (p.views || 0), 0);
+            const sales = products.reduce((s, p) => s + (p.simulatedSales || 0), 0);
+            document.getElementById('statProducts').textContent = used;
+            document.getElementById('statViews').textContent = views.toLocaleString('es-CO');
+            document.getElementById('statSales').textContent = sales;
+            var limit = PLAN_LIMITS[localStorage.getItem('mg_plan')] || 5;
+            var pct = Math.min(100, (used / limit) * 100);
+            var fill = document.getElementById('progressFill');
+            if (fill) {
+                fill.style.width = pct + '%';
+                fill.className = 'progress-fill' + (pct >= 90 ? ' warning' : '');
+            }
+            document.getElementById('progressUsed').textContent = used;
+            document.getElementById('progressLimit').textContent = 'de ' + limit + ' productos';
+            renderProducts();
         }
 
-        // AUTH GUARD
-        // ============================================================
-        if (!getToken()) {
-            document.querySelector('.dashboard').innerHTML = `
-                <div style="text-align:center;padding:80px 20px;">
-                    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--amber-50),#FFF3E0);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2.2rem;color:var(--orange-600);">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:8px;">Inicia sesión para vender</h2>
-                    <p style="color:var(--gray-500);margin-bottom:24px;">Debes tener una cuenta en MarketGo para publicar y gestionar productos.</p>
-                    <a href="index.html" class="btn-primary" style="text-decoration:none;">
-                        <i class="fas fa-arrow-left"></i> Ir al inicio
-                    </a>
-                </div>
-            `;
-        } else {
-            // ============================================================
-            // LOAD DATA
-            // ============================================================
-            async function loadProducts() {
-                try {
-                    products = await apiCall('/products');
-                    renderProducts();
-                    updateStats();
-                } catch (err) {
-                    showToast('Error al cargar productos: ' + err.message);
-                }
+        function animateCounter(id, final) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            var current = 0;
+            function tick() {
+                current += Math.ceil((final - current) * 0.1);
+                if (current >= final) { el.textContent = final; return; }
+                el.textContent = current;
+                requestAnimationFrame(tick);
+            }
+            setTimeout(tick, 200);
+        }
+
+        function renderProducts() {
+            const container = document.getElementById('productList');
+            const count = document.getElementById('productCount');
+            count.textContent = products.length + ' producto' + (products.length !== 1 ? 's' : '') + ' publicado' + (products.length !== 1 ? 's' : '');
+
+            if (products.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>Aún no has publicado ningún producto. ¡Completa el formulario para comenzar!</p></div>';
+                return;
             }
 
-            function updateStats() {
-                const views = products.reduce((sum, p) => sum + (p.views || 0), 0);
-                const sales = products.reduce((sum, p) => sum + (p.simulatedSales || 0), 0);
-                document.getElementById('statProducts').textContent = products.length;
-                document.getElementById('statViews').textContent = views.toLocaleString('es-CO');
-                document.getElementById('statSales').textContent = sales;
-            }
+            const table = document.createElement('table');
+            table.className = 'product-table';
+            table.innerHTML = '<thead><tr><th>Producto</th><th>Precio</th><th>Stock</th><th>Vistas</th><th>Ventas</th><th></th></tr></thead><tbody>' +
+                products.map((p) => '<tr>' +
+                    '<td data-label="Producto"><div style="display:flex;align-items:center;gap:12px;">' +
+                    (p.image ? '<img src="' + p.image + '" style="width:48px;height:48px;border-radius:8px;object-fit:cover;flex-shrink:0;">' : '<span class="prod-icon"><i class="fas ' + (CATEGORY_ICONS[p.category] || 'fa-tag') + '"></i></span>') +
+                    '<div><div class="prod-name">' + p.name + ' <span class="prod-badge premium">Verificado</span></div><div class="prod-cat">' + p.category + '</div></div></div></td>' +
+                    '<td data-label="Precio"><strong>' + formatPrice(p.price) + '</strong></td>' +
+                    '<td data-label="Stock">' + p.stock + '</td>' +
+                    '<td data-label="Vistas">' + (p.views || 0).toLocaleString('es-CO') + '</td>' +
+                    '<td data-label="Ventas">' + (p.simulatedSales || 0) + '</td>' +
+                    '<td data-label="Acciones"><div class="table-actions"><button class="btn-sm btn-sm-edit" onclick="editProduct(' + p.id + ')"><i class="fas fa-edit"></i> Editar</button><button class="btn-sm btn-sm-delete" onclick="deleteProduct(' + p.id + ')"><i class="fas fa-trash"></i></button></div></td>' +
+                    '</tr>').join('') +
+                '</tbody>';
+            container.innerHTML = '';
+            container.appendChild(table);
 
-            function renderProducts() {
-                const container = document.getElementById('productList');
-                const count = document.getElementById('productCount');
-                count.textContent = `${products.length} producto${products.length !== 1 ? 's' : ''} publicado${products.length !== 1 ? 's' : ''}`;
-
-                if (products.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-box-open"></i>
-                            <p>Aún no has publicado ningún producto. ¡Completa el formulario para comenzar!</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const table = document.createElement('table');
-                table.className = 'product-table';
-                table.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>Stock</th>
-                            <th>Vistas</th>
-                            <th>Ventas</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${products.map((p) => `
-                            <tr>
-                                <td data-label="Producto">
-                                    <div style="display:flex;align-items:center;gap:12px;">
-                                        <span class="prod-icon"><i class="fas ${CATEGORY_ICONS[p.category] || 'fa-tag'}"></i></span>
-                                        <div>
-                                            <div class="prod-name">${p.name}</div>
-                                            <div class="prod-cat">${p.category}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td data-label="Precio"><strong>${formatPrice(p.price)}</strong></td>
-                                <td data-label="Stock">${p.stock}</td>
-                                <td data-label="Vistas">${(p.views || 0).toLocaleString('es-CO')}</td>
-                                <td data-label="Ventas">${p.simulatedSales || 0}</td>
-                                <td data-label="Acciones">
-                                    <div class="table-actions">
-                                        <button class="btn-sm btn-sm-edit" onclick="editProduct(${p.id})">
-                                            <i class="fas fa-edit"></i> Editar
-                                        </button>
-                                        <button class="btn-sm btn-sm-delete" onclick="deleteProduct(${p.id})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                `;
-                container.innerHTML = '';
-                container.appendChild(table);
-            }
-
-            window.deleteProduct = async function(id) {
-                if (!confirm('¿Eliminar este producto?')) return;
-                try {
-                    const data = await apiCall('/products/' + id, { method: 'DELETE' });
-                    products = products.filter(p => p.id !== id);
-                    renderProducts();
-                    updateStats();
-                    showToast(`"${data.name}" eliminado`);
-                } catch (err) {
-                    showToast('Error: ' + err.message);
-                }
-            };
-
-            window.editProduct = function(id) {
-                const p = products.find(pr => pr.id === id);
-                if (!p) return;
-                document.getElementById('prodName').value = p.name;
-                document.getElementById('prodCategory').value = p.category;
-                document.getElementById('prodPrice').value = p.price;
-                document.getElementById('prodStock').value = p.stock;
-                document.getElementById('prodDesc').value = p.desc;
-                editId = id;
-                document.getElementById('formTitle').textContent = 'Editar producto';
-                document.getElementById('formSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Guardar cambios';
-                document.getElementById('formCancelBtn').style.display = 'inline-block';
-                document.getElementById('formSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            };
-
-            function cancelEdit() {
-                editId = null;
-                document.getElementById('productForm').reset();
-                document.getElementById('formTitle').textContent = 'Publicar nuevo producto';
-                document.getElementById('formSubmitBtn').innerHTML = '<i class="fas fa-plus"></i> Publicar producto';
-                document.getElementById('formCancelBtn').style.display = 'none';
-            }
-
-            document.getElementById('productForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const name = document.getElementById('prodName').value.trim();
-                const category = document.getElementById('prodCategory').value;
-                const price = parseFloat(document.getElementById('prodPrice').value);
-                const stock = parseInt(document.getElementById('prodStock').value);
-                const desc = document.getElementById('prodDesc').value.trim();
-
-                if (!name || !category || !price || !desc) {
-                    showToast('Completa todos los campos obligatorios');
-                    return;
-                }
-
-                try {
-                    if (editId !== null) {
-                        const data = await apiCall('/products/' + editId, {
-                            method: 'PUT',
-                            body: JSON.stringify({ name, category, price, stock, desc })
-                        });
-                        const idx = products.findIndex(p => p.id === editId);
-                        if (idx !== -1) products[idx] = data;
-                        showToast(`"${name}" actualizado`);
-                        cancelEdit();
-                    } else {
-                        const data = await apiCall('/products', {
-                            method: 'POST',
-                            body: JSON.stringify({ name, category, price, stock, desc })
-                        });
-                        products.push(data);
-                        showToast(`"${name}" publicado en MarketGo`);
-                        document.getElementById('productForm').reset();
-                        document.getElementById('prodStock').value = '1';
-                    }
-                    renderProducts();
-                    updateStats();
-                } catch (err) {
-                    showToast('Error: ' + err.message);
-                }
+            // Stagger row animation via CSS
+            var rows = table.querySelectorAll('tbody tr');
+            rows.forEach(function(row, i) {
+                row.style.opacity = '0';
+                row.style.transform = 'translateX(-15px)';
+                setTimeout(function() {
+                    row.style.transition = 'all 0.4s ease';
+                    row.style.opacity = '1';
+                    row.style.transform = 'translateX(0)';
+                }, 50 + i * 60);
             });
+        }
 
-            document.getElementById('formCancelBtn').addEventListener('click', cancelEdit);
+        window.deleteProduct = async function(id) {
+            if (!confirm('¿Eliminar este producto?')) return;
+            try {
+                const data = await apiCall('/products/' + id, { method: 'DELETE' });
+                products = products.filter(p => p.id !== id);
+                renderDashboard();
+                showToast('"' + data.name + '" eliminado');
+            } catch (err) {
+                showToast('Error: ' + err.message);
+            }
+        };
 
-            // Init
-            loadProducts();
+        window.editProduct = function(id) {
+            const p = products.find(pr => pr.id === id);
+            if (!p) return;
+            document.getElementById('prodName').value = p.name;
+            document.getElementById('prodCategory').value = p.category;
+            document.getElementById('prodPrice').value = p.price;
+            document.getElementById('prodStock').value = p.stock;
+            document.getElementById('prodDesc').value = p.desc;
+            if (p.image) {
+                var preview = document.getElementById('imagePreview');
+                preview.src = p.image;
+                preview.style.display = 'block';
+                document.getElementById('uploadIcon').style.display = 'none';
+                document.getElementById('uploadLabel').style.display = 'none';
+                document.getElementById('uploadHint').style.display = 'none';
+                document.getElementById('fileName').textContent = 'Imagen actual';
+                document.getElementById('fileName').style.display = 'block';
+                document.getElementById('dropzone').style.padding = '20px';
+            }
+            editId = id;
+            document.getElementById('formTitle').innerHTML = 'Editar <em style="font-style:italic;color:var(--accent-secondary);">producto</em>';
+            document.getElementById('formSubmitBtn').querySelector('span').textContent = 'Guardar cambios';
+            document.getElementById('formCancelBtn').style.display = 'inline-block';
+            document.getElementById('formSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        function cancelEdit() {
+            editId = null;
+            document.getElementById('productForm').reset();
+            document.getElementById('prodStock').value = '1';
+            document.getElementById('formTitle').innerHTML = 'Publicar <em style="font-style:italic;color:var(--accent-secondary);">nuevo</em><br>producto';
+            document.getElementById('formSubmitBtn').querySelector('span').textContent = 'Publicar producto';
+            document.getElementById('formCancelBtn').style.display = 'none';
+            var preview = document.getElementById('imagePreview');
+            preview.style.display = 'none';
+            preview.src = '';
+            document.getElementById('uploadIcon').style.display = 'flex';
+            document.getElementById('uploadLabel').style.display = 'block';
+            document.getElementById('uploadHint').style.display = 'block';
+            document.getElementById('fileName').style.display = 'none';
+            document.getElementById('dropzone').style.padding = '36px 20px';
+        }
+
+        document.getElementById('prodImage').addEventListener('change', function() {
+            var file = this.files[0];
+            if (!file) return;
+            var preview = document.getElementById('imagePreview');
+            var icon = document.getElementById('uploadIcon');
+            var label = document.getElementById('uploadLabel');
+            var hint = document.getElementById('uploadHint');
+            var fname = document.getElementById('fileName');
+            var zone = document.getElementById('dropzone');
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                icon.style.display = 'none';
+                label.style.display = 'none';
+                hint.style.display = 'none';
+                fname.textContent = file.name;
+                fname.style.display = 'block';
+                zone.style.padding = '20px';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('prodName').value.trim();
+            const category = document.getElementById('prodCategory').value;
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            const stock = parseInt(document.getElementById('prodStock').value);
+            const desc = document.getElementById('prodDesc').value.trim();
+            const imageInput = document.getElementById('prodImage');
+            var image = null;
+            if (imageInput.files.length > 0) {
+                image = await new Promise(function(resolve) {
+                    var reader = new FileReader();
+                    reader.onload = function(ev) { resolve(ev.target.result); };
+                    reader.readAsDataURL(imageInput.files[0]);
+                });
+            }
+            if (!name || !category || !price || !desc) { showToast('Completa todos los campos obligatorios'); return; }
+
+            try {
+                if (editId !== null) {
+                    const data = await apiCall('/products/' + editId, { method: 'PUT', body: JSON.stringify({ name, category, price, stock, desc, image }) });
+                    const idx = products.findIndex(p => p.id === editId);
+                    if (idx !== -1) products[idx] = data;
+                    showToast('"' + name + '" actualizado');
+                    cancelEdit();
+                } else {
+                    const data = await apiCall('/products', { method: 'POST', body: JSON.stringify({ name, category, price, stock, desc, image }) });
+                    products.push(data);
+                    showToast('"' + name + '" publicado en MarketGo');
+                    document.getElementById('productForm').reset();
+                    document.getElementById('prodStock').value = '1';
+                    cancelEdit();
+                }
+                renderDashboard();
+            } catch (err) { showToast('Error: ' + err.message); }
+        });
+
+        document.getElementById('formCancelBtn').addEventListener('click', cancelEdit);
+
+        function changeQty(delta) {
+            var input = document.getElementById('prodStock');
+            var val = Math.max(1, parseInt(input.value || '1') + delta);
+            input.value = val;
         }
 
         function showToast(message) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = 'toast';
-            toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+            toast.innerHTML = '<i class="fas fa-check-circle"></i><span>' + message + '</span>';
             container.appendChild(toast);
             setTimeout(() => {
                 toast.style.animation = 'slideOutRight 0.4s ease forwards';
                 setTimeout(() => toast.remove(), 400);
             }, 2500);
         }
-    </script>
-<script>
-    document.getElementById('hamburgerBtn').addEventListener('click', function() {
-        var nav = document.getElementById('mobileNav');
-        var isOpen = nav.classList.toggle('open');
-        this.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-        document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.querySelectorAll('#mobileNav a').forEach(function(link) {
-        link.addEventListener('click', function() {
-            document.getElementById('mobileNav').classList.remove('open');
-            document.getElementById('hamburgerBtn').innerHTML = '<i class="fas fa-bars"></i>';
-            document.body.style.overflow = '';
+
+        document.getElementById('hamburgerBtn').addEventListener('click', function() {
+            var nav = document.getElementById('mobileNav');
+            var isOpen = nav.classList.toggle('open');
+            this.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            document.body.style.overflow = isOpen ? 'hidden' : '';
         });
-    });
+        document.querySelectorAll('#mobileNav a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('mobileNav').classList.remove('open');
+                document.getElementById('hamburgerBtn').innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Ripple effect on buttons
+        (function() {
+            document.querySelectorAll('.btn-primary, .btn-outline, .plan-card .plan-btn').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    var ripple = document.createElement('span');
+                    ripple.className = 'ripple-overlay';
+                    var rect = btn.getBoundingClientRect();
+                    ripple.style.left = (e.clientX - rect.left) + 'px';
+                    ripple.style.top = (e.clientY - rect.top) + 'px';
+                    btn.appendChild(ripple);
+                    setTimeout(function() { ripple.remove(); }, 500);
+                });
+            });
+        })();
+
+        // ============================================================
+        // AUTH GUARD
+        // ============================================================
+        // ===== PLAN SELECTION =====
+        var PLAN_LIMITS = { gratis: 5, platino: 10, gold: 35 };
+        var PLAN_NAMES = { gratis: 'Gratis', platino: 'Platino', gold: 'Gold' };
+        var PLAN_ICONS = { gratis: 'fa-gift', platino: 'fa-gem', gold: 'fa-crown' };
+
+        window.selectPlan = function(plan) {
+            localStorage.setItem('mg_plan', plan);
+            var used = products.length;
+            var limit = PLAN_LIMITS[plan] || 5;
+            document.getElementById('planIcon').className = 'fas ' + PLAN_ICONS[plan];
+            document.getElementById('planNameDisplay').textContent = PLAN_NAMES[plan];
+            document.getElementById('progressUsed').textContent = used;
+            document.getElementById('progressLimit').textContent = 'de ' + limit + ' productos';
+            var pct = Math.min(100, (used / limit) * 100);
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('progressFill').className = 'progress-fill' + (pct >= 90 ? ' warning' : '');
+            document.getElementById('plansSection').style.display = 'none';
+            showToast('Plan ' + PLAN_NAMES[plan] + ' activado');
+        };
+
+        // Restore saved plan on load
+        var savedPlan = localStorage.getItem('mg_plan');
+        if (savedPlan && PLAN_NAMES[savedPlan]) {
+            document.getElementById('plansSection').style.display = 'none';
+            window.selectPlan(savedPlan);
+        }
+
+        if (!getToken()) {
+            document.querySelector('.dashboard').innerHTML = '';
+            document.querySelector('.plans-section').innerHTML = '';
+            document.querySelector('.page-hero').innerHTML = `
+                <div class="page-hero-content" style="text-align:center;padding:80px 20px;">
+                    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(245,158,11,0.1));display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2.2rem;color:var(--accent);">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:8px;">Inicia sesión para vender</h2>
+                    <p style="color:var(--text-secondary);margin-bottom:24px;">Debes tener una cuenta en MarketGo para publicar y gestionar productos.</p>
+                    <a href="index.html" class="btn-primary" style="text-decoration:none;">
+                        <i class="fas fa-arrow-left"></i> Ir al inicio
+                    </a>
+                </div>
+            `;
+        } else {
+            document.querySelectorAll('#aboutNavLink').forEach(function(el) { if (el) el.style.display = 'none'; });
+
+            (async function load() {
+                try {
+                    products = await apiCall('/products');
+                } catch (err) {
+                    showToast('Error al cargar productos: ' + err.message);
+                }
+                renderDashboard();
+            })();
+
+            // GSAP ScrollTrigger animations handled by cinematic.js storytelling script below
+
+            // Progress bar animation after a short delay
+            setTimeout(function() {
+                var fill = document.getElementById('progressFill');
+                if (fill) {
+                    var w = fill.style.width;
+                    fill.style.width = '0%';
+                    setTimeout(function() {
+                        fill.style.width = w;
+                    }, 100);
+                }
+            }, 1200);
+        }
+    </script>
+
+    <script src="cinematic.js"></script>
+    <script>
+// ============================================================
+// VENDER — GSAP + Anime.js SCROLL STORYTELLING
+// ============================================================
+(function() {
+    if (typeof gsap === 'undefined') return;
+    var wait = setInterval(function() {
+        if (window._cinematic && window._animeMotion) {
+            clearInterval(wait);
+            initPage();
+        }
+    }, 200);
+
+    function initPage() {
+        var c = window._cinematic;
+        var a = window._animeMotion;
+
+        // ---- HERO ENTRANCE (GSAP timeline) ----
+        var heroTl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+        heroTl
+            .from('.page-hero-content h1 span', {
+                y: 80, rotationX: 20, scale: 0.7, filter: 'blur(8px)',
+                duration: 1.6
+            })
+            .from('.page-hero-content p', {
+                y: 40, opacity: 0, duration: 0.8
+            }, '-=0.4');
+
+        // ---- PLAN CARDS (Anime.js stagger entrance) ----
+        a.staggerIn('.plan-card', {
+            translateY: [100, 0], opacity: [0, 1],
+            scale: [0.75, 1],
+            duration: 1400, delay: anime.stagger(150),
+            easing: 'easeOutExpo',
+        });
+
+        // ---- DASHBOARD STATS (Anime.js stagger) ----
+        a.staggerIn('.dash-card', {
+            translateY: [70, 0], opacity: [0, 1],
+            scale: [0.85, 1],
+            duration: 1200, delay: anime.stagger(100),
+            easing: 'easeOutExpo',
+        });
+
+        // Spring counters for dashboard stats
+        var statIds = ['statProducts', 'statViews', 'statSales'];
+        statIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            var final = parseInt(el.textContent) || 0;
+            if (final > 0) {
+                el.textContent = '0';
+                a.smoothCounter(el, final, '');
+            }
+        });
+
+        // ---- FORM SECTION (GSAP) ----
+        var formSection = document.querySelector('.form-section');
+        if (formSection) {
+            gsap.from(formSection, {
+                y: 50, opacity: 0, scale: 0.95, filter: 'blur(4px)',
+                duration: 1.4, ease: 'power4.out',
+                scrollTrigger: { trigger: formSection, start: 'top 85%', toggleActions: 'play none none none' }
+            });
+        }
+
+        // ---- PRODUCT LIST HEADER (GSAP) ----
+        var listHeader = document.querySelector('.list-header');
+        if (listHeader) {
+            gsap.from(listHeader, {
+                y: 40, opacity: 0, duration: 0.8,
+                scrollTrigger: { trigger: listHeader, start: 'top 85%', toggleActions: 'play none none none' }
+            });
+        }
+
+        // ---- PLAN BANNER (GSAP) ----
+        var planBanner = document.querySelector('.plan-banner');
+        if (planBanner) {
+            gsap.from(planBanner, {
+                y: 40, opacity: 0, scale: 0.96, duration: 0.8,
+                scrollTrigger: { trigger: planBanner, start: 'top 85%', toggleActions: 'play none none none' }
+            });
+        }
+
+        // ---- FOOTER (GSAP + Anime.js) ----
+        gsap.from('footer', {
+            y: 60, opacity: 0, scale: 0.95, duration: 1.6, ease: 'power4.out',
+            scrollTrigger: { trigger: 'footer', start: 'top 90%', toggleActions: 'play none none none' },
+            onComplete: function() {
+                a.smoothFloat('footer .footer-col', {
+                    yRange: [-4, 4], duration: 5000,
+                });
+            }
+        });
+
+        if (typeof ScrollTrigger !== 'undefined') setTimeout(function() { ScrollTrigger.refresh(); }, 600);
+    }
+})();
 </script>
 </body>
 </html>
