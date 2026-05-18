@@ -480,12 +480,17 @@
         #intro-wall #gallery-container {
             position: absolute; inset: 0; z-index: 0;
         }
+        #intro-wall::after {
+            content: ''; position: absolute; inset: 0;
+            z-index: 1; pointer-events: none;
+            background: rgba(0,0,0,0.65);
+        }
         #intro-wall #gallery-container canvas {
             display: block; width: 100% !important; height: 100% !important;
         }
         #intro-wall #gallery-loading {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 1; color: var(--text-tertiary); font-size: 0.9rem;
+            z-index: 2; color: var(--text-tertiary); font-size: 0.9rem;
             font-weight: 500; letter-spacing: 1px;
         }
         #intro-wall #gallery-ui {
@@ -512,7 +517,7 @@
         }
         .intro-overlay h1 {
             font-size: 3.6rem; font-weight: 800; line-height: 1.1;
-            margin-bottom: 16px; color: var(--text-primary);
+            margin-bottom: 16px; color: #fff;
             text-shadow: 0 2px 40px rgba(0,0,0,0.5);
         }
         .intro-overlay h1 .highlight {
@@ -522,7 +527,7 @@
             animation: textGradient 4s ease infinite;
         }
         .intro-overlay p {
-            font-size: 1.15rem; color: var(--text-secondary);
+            font-size: 1.15rem; color: rgba(255,255,255,0.72);
             max-width: 540px; margin: 0 auto 36px; line-height: 1.6;
             text-shadow: 0 2px 20px rgba(0,0,0,0.4);
         }
@@ -533,6 +538,12 @@
         .intro-overlay .intro-buttons .btn-primary,
         .intro-overlay .intro-buttons .btn-outline {
             padding: 14px 36px; font-size: 1rem;
+            color: #fff !important; border-color: rgba(255,255,255,0.4) !important;
+        }
+        .intro-overlay .intro-buttons .btn-outline:hover {
+            background: rgba(255,255,255,0.1) !important;
+            border-color: #fff !important;
+            color: #fff !important;
         }
         .intro-stats {
             display: flex; justify-content: center; gap: 48px;
@@ -546,12 +557,12 @@
             background-clip: text;
         }
         .intro-stats .intro-stat-label {
-            font-size: 0.8rem; color: var(--text-tertiary); font-weight: 500; margin-top: 2px;
+            font-size: 0.8rem; color: rgba(255,255,255,0.5); font-weight: 500; margin-top: 2px;
         }
         .intro-scroll {
             position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
             z-index: 3; display: flex; flex-direction: column; align-items: center;
-            gap: 6px; color: var(--text-tertiary); font-size: 0.75rem;
+            gap: 6px; color: rgba(255,255,255,0.5); font-size: 0.75rem;
             letter-spacing: 2px; text-transform: uppercase; opacity: 0;
             transition: opacity 1s ease 1.5s;
         }
@@ -727,11 +738,6 @@
             <i class="fas fa-store intro-logo"></i>
             <h1>El marketplace que <span class="highlight">conecta</span> tu negocio con el mundo</h1>
             <p>Compra y vende de forma segura en nuestra plataforma. Conectamos compradores y vendedores locales para impulsar el comercio digital en Colombia.</p>
-            <div class="intro-stats">
-                <div class="intro-stat"><div class="intro-stat-number">Beta</div><div class="intro-stat-label">Versi&oacute;n de la plataforma</div></div>
-                <div class="intro-stat"><div class="intro-stat-number">2</div><div class="intro-stat-label">Desarrolladores</div></div>
-                <div class="intro-stat"><div class="intro-stat-number">Bucaramanga</div><div class="intro-stat-label">Cobertura inicial</div></div>
-            </div>
             <div class="intro-buttons" style="margin-top:32px;">
                 <a href="#products" class="btn-primary">Ver productos</a>
                 <a href="about.html" class="btn-outline">Conocenos</a>
