@@ -824,7 +824,7 @@
         <div class="modal product-detail-modal" id="productDetailModal">
             <button class="detail-close" id="detailClose"><i class="fas fa-times"></i></button>
             <div class="detail-layout">
-                <div class="detail-image" id="detailImage"><img src="" alt=""></div>
+                <div class="detail-image" id="detailImage"><img src="" alt=""><div class="detail-img-fallback" id="detailImgFallback" style="display:none"><i class="fas fa-image"></i></div></div>
                 <div class="detail-info">
                     <span class="detail-category" id="detailCategory"></span>
                     <h2 id="detailName"></h2>
@@ -1031,7 +1031,7 @@
                 var catIcon = categoryIcons[p.category] || 'fas fa-tag';
                 var imgHtml;
                 if (imgUrl) {
-                    imgHtml = '<img src="' + imgUrl + '" alt="' + p.name + '" loading="lazy" onerror="this.onerror=null;this.parentNode.innerHTML=\'<div class=\\\\\'card-img-fallback\\\\\'><i class=\\\\\'' + catIcon + ' card-img-icon\\\\\'></i></div>\'">';
+                    imgHtml = '<img src="' + imgUrl + '" alt="' + p.name + '" loading="lazy">';
                 } else {
                     imgHtml = '<div class="card-img-fallback"><i class="' + catIcon + ' card-img-icon"></i></div>';
                 }
@@ -1051,7 +1051,9 @@
             detailImg.src = p.image || '';
             detailImg.alt = p.name;
             detailImg.style.display = '';
-            detailImg.onerror = function() { this.onerror = null; this.style.display = 'none'; this.parentNode.innerHTML = '<div class="card-img-fallback" style="height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated);"><i class="fas fa-image" style="font-size:3rem;color:var(--text-tertiary);opacity:0.5;"></i></div>'; };
+            var detailFallback = document.getElementById('detailImgFallback');
+            detailFallback.style.display = 'none';
+            detailImg.onerror = function() { this.onerror = null; this.style.display = 'none'; detailFallback.style.display = 'flex'; };
             document.getElementById('detailCategory').textContent = p.category;
             document.getElementById('detailName').textContent = p.name;
             document.getElementById('detailPrice').textContent = formatCOP(p.price);
