@@ -232,6 +232,14 @@
             border-radius: 20px; background: var(--bg-surface);
             transform: none; text-align: left;
         }
+        @media (max-width: 640px) {
+            .product-detail-overlay .product-detail-modal {
+                overflow-y: auto; max-height: 90dvh;
+            }
+            .modal-overlay.product-detail-overlay {
+                align-items: flex-start; padding-top: 10px;
+            }
+        }
         .product-detail-overlay .detail-close {
             position: absolute; top: 16px; right: 16px; z-index: 10;
             width: 36px; height: 36px; border-radius: 50%; border: none;
@@ -465,7 +473,7 @@
         .footer-col a i { width: 18px; margin-right: 6px; color: var(--accent); }
         @media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
         #intro-wall {
-            position: relative; width: 100%; height: 100vh;
+            position: relative; width: 100%; min-height: 100dvh;
             overflow: hidden; background: var(--bg-primary);
             display: flex; align-items: center; justify-content: center;
         }
@@ -551,8 +559,130 @@
         .intro-scroll i { font-size: 0.9rem; animation: scrollBounce 2s ease infinite; }
         @keyframes scrollBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 
-        @media (max-width: 768px) { header { padding: 0 16px; } nav { display: none; } .hamburger { display: block; } .header-actions { gap: 8px; } .header-actions .btn-icon { width: 36px; height: 36px; font-size: 0.95rem; } #intro-wall { height: 100vh; } .intro-overlay h1 { font-size: 2.2rem; } .intro-overlay .intro-logo { font-size: 2.5rem; } .intro-stats { gap: 24px; flex-wrap: wrap; } .intro-stats .intro-stat-number { font-size: 1.4rem; } .products-section { padding: 60px 20px; } .products-header { flex-direction: column; align-items: flex-start; gap: 12px; } .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; } .cart-sidebar { width: 100%; } .footer-grid { grid-template-columns: 1fr; gap: 32px; } .footer-bottom { flex-direction: column; gap: 8px; text-align: center; } }
-        @media (max-width: 480px) { #intro-wall { height: calc(100vh - 72px); } .intro-overlay h1 { font-size: 1.8rem; } .intro-overlay .intro-buttons { flex-direction: column; align-items: center; } .product-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { header { padding: 0 16px; } nav { display: none; } .hamburger { display: block; } .header-actions { gap: 8px; } .header-actions .btn-icon { width: 36px; height: 36px; font-size: 0.95rem; } #intro-wall { min-height: 100dvh; } .intro-overlay { padding: 24px; } .intro-overlay h1 { font-size: 2rem; } .intro-overlay .intro-logo { font-size: 2.2rem; } .intro-overlay p { font-size: 0.95rem; margin-bottom: 24px; } .intro-stats { gap: 16px; flex-wrap: wrap; margin-top: 20px; } .intro-stats .intro-stat-number { font-size: 1.2rem; } .intro-overlay .intro-buttons { gap: 10px; } .intro-overlay .intro-buttons .btn-primary, .intro-overlay .intro-buttons .btn-outline { padding: 10px 24px; font-size: 0.85rem; } .products-section { padding: 60px 20px; } .products-header { flex-direction: column; align-items: flex-start; gap: 12px; } .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; } .cart-sidebar { width: 100%; } .footer-grid { grid-template-columns: 1fr; gap: 32px; } .footer-bottom { flex-direction: column; gap: 8px; text-align: center; } }
+        @media (max-width: 480px) { #intro-wall { min-height: calc(100dvh - 72px); } .intro-overlay { padding: 16px; } .intro-overlay h1 { font-size: 1.5rem; } .intro-overlay .intro-logo { font-size: 1.8rem; } .intro-overlay p { font-size: 0.85rem; margin-bottom: 16px; } .intro-stats { gap: 12px; margin-top: 16px; } .intro-stats .intro-stat-number { font-size: 1rem; } .intro-stats .intro-stat-label { font-size: 0.7rem; } .intro-overlay .intro-buttons { flex-direction: column; align-items: center; gap: 8px; } .intro-overlay .intro-buttons .btn-primary, .intro-overlay .intro-buttons .btn-outline { padding: 8px 20px; font-size: 0.8rem; } .product-grid { grid-template-columns: 1fr; } }
+
+        /* === Glassmorphism Auth === */
+        .glass-auth .modal { background: transparent; box-shadow: none; border: none; padding: 0; max-width: 420px; }
+        .glass-auth .glass-card {
+            background: rgba(255,255,255,0.08); border-radius: 18px;
+            padding: 44px 36px 40px; text-align: center;
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+        }
+        .glass-auth .glass-bg {
+            position: absolute; inset: 0; z-index: -1; overflow: hidden;
+            border-radius: inherit; pointer-events: none;
+        }
+        .glass-auth .glass-bg .shape {
+            position: absolute; border-radius: 50%;
+            filter: blur(60px); opacity: 0.6;
+        }
+        .glass-auth .glass-bg .shape:first-child {
+            width: 200px; height: 200px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            left: -70px; top: -70px;
+        }
+        .glass-auth .glass-bg .shape:last-child {
+            width: 180px; height: 180px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            right: -40px; bottom: -60px;
+        }
+        .glass-auth .glass-logo {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-bottom: 16px;
+        }
+        .glass-auth .glass-logo i {
+            font-size: 1.5rem; color: #f59e0b;
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass-auth .glass-logo span {
+            font-size: 1.4rem; font-weight: 800;
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; letter-spacing: -0.03em;
+        }
+        .glass-auth .glass-icon {
+            width: 64px; height: 64px; border-radius: 50%;
+            background: linear-gradient(135deg, rgba(245,158,11,0.25), rgba(245,158,11,0.08));
+            border: 1px solid rgba(245,158,11,0.3);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px; font-size: 1.6rem; color: #fbbf24;
+        }
+        .glass-auth h3 {
+            font-size: 1.4rem; font-weight: 700; margin-bottom: 6px;
+            color: #fff; letter-spacing: -0.02em;
+        }
+        .glass-auth .glass-sub {
+            font-size: 0.85rem; color: rgba(255,255,255,0.55);
+            margin-bottom: 24px;
+        }
+        .glass-auth .form-group {
+            margin-bottom: 14px; text-align: left;
+        }
+        .glass-auth .form-group label {
+            display: block; font-size: 0.75rem; font-weight: 600;
+            color: rgba(255,255,255,0.7); margin-bottom: 5px;
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .glass-auth .form-group input {
+            width: 100%; padding: 12px 16px; box-sizing: border-box;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px; color: #fff;
+            font-size: 0.9rem; font-family: inherit;
+            transition: all 0.25s ease;
+        }
+        .glass-auth .form-group input:focus {
+            outline: none; border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245,158,11,0.2);
+            background: rgba(255,255,255,0.1);
+        }
+        .glass-auth .form-group input::placeholder { color: rgba(255,255,255,0.3); }
+        .glass-auth .glass-btn {
+            width: 100%; margin-top: 6px; padding: 13px;
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            border: none; border-radius: 10px; color: #fff;
+            font-size: 0.95rem; font-weight: 600; cursor: pointer;
+            font-family: inherit; transition: all 0.25s ease;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .glass-auth .glass-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(245,158,11,0.35);
+        }
+        .glass-auth .glass-btn:active { transform: translateY(0); }
+        .glass-auth .glass-btn-outline {
+            width: 100%; margin-top: 10px; padding: 12px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px; color: rgba(255,255,255,0.8);
+            font-size: 0.88rem; font-weight: 500; cursor: pointer;
+            font-family: inherit; transition: all 0.25s ease;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            text-decoration: none;
+        }
+        .glass-auth .glass-btn-outline:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(245,158,11,0.3);
+            color: #f59e0b;
+        }
+        .glass-auth .glass-error {
+            font-size: 0.8rem; color: #f87171; margin-bottom: 10px;
+            display: none; text-align: center;
+        }
+        .glass-auth .glass-switch {
+            margin-top: 16px; font-size: 0.82rem;
+            color: rgba(255,255,255,0.5);
+        }
+        .glass-auth .glass-switch a {
+            color: #fbbf24; text-decoration: none; font-weight: 600;
+            cursor: pointer;
+        }
+        .glass-auth .glass-switch a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -732,12 +862,17 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="loginOverlay">
-        <div class="modal auth-modal">
-            <div class="modal-icon"><i class="fas fa-user-circle"></i></div>
-            <h3>Iniciar sesion</h3>
-            <form class="auth-form" id="loginForm">
-                <div class="auth-error" id="loginError"></div>
+    <div class="modal-overlay glass-auth" id="loginOverlay">
+        <div class="modal glass-card">
+            <div class="glass-bg">
+                <div class="shape"></div>
+                <div class="shape"></div>
+            </div>
+            <div class="glass-logo"><i class="fas fa-store"></i><span>MarketGo</span></div>
+            <h3>Bienvenido</h3>
+            <p class="glass-sub">Inicia sesion para continuar</p>
+            <form id="loginForm">
+                <div class="glass-error" id="loginError"></div>
                 <div class="form-group">
                     <label for="loginEmail">Correo electronico</label>
                     <input type="email" id="loginEmail" placeholder="tu@correo.com" required>
@@ -746,18 +881,24 @@
                     <label for="loginPassword">Contrasena</label>
                     <input type="password" id="loginPassword" placeholder="********" required>
                 </div>
-                <button type="submit" class="btn-primary" id="loginSubmitBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
-                <div class="auth-switch">No tienes cuenta? <a id="switchToRegister">Registrate aqui</a></div>
+                <button type="submit" class="glass-btn" id="loginSubmitBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+                <a class="glass-btn-outline" id="glassGoogleLogin"><i class="fab fa-google"></i> Continuar con Google</a>
+                <div class="glass-switch">No tienes cuenta? <a id="switchToRegister">Registrate aqui</a></div>
             </form>
         </div>
     </div>
 
-    <div class="modal-overlay" id="registerOverlay">
-        <div class="modal auth-modal">
-            <div class="modal-icon"><i class="fas fa-user-plus"></i></div>
+    <div class="modal-overlay glass-auth" id="registerOverlay">
+        <div class="modal glass-card">
+            <div class="glass-bg">
+                <div class="shape"></div>
+                <div class="shape"></div>
+            </div>
+            <div class="glass-logo"><i class="fas fa-store"></i><span>MarketGo</span></div>
             <h3>Crear cuenta</h3>
-            <form class="auth-form" id="registerForm">
-                <div class="auth-error" id="registerError"></div>
+            <p class="glass-sub">Unete a MarketGo</p>
+            <form id="registerForm">
+                <div class="glass-error" id="registerError"></div>
                 <div class="form-group">
                     <label for="regName">Nombre completo</label>
                     <input type="text" id="regName" placeholder="Tu nombre" required>
@@ -770,8 +911,8 @@
                     <label for="regPassword">Contrasena</label>
                     <input type="password" id="regPassword" placeholder="Minimo 6 caracteres" minlength="6" required>
                 </div>
-                <button type="submit" class="btn-primary" id="registerSubmitBtn"><i class="fas fa-user-plus"></i> Crear cuenta</button>
-                <div class="auth-switch">Ya tienes cuenta? <a id="switchToLogin">Inicia sesion</a></div>
+                <button type="submit" class="glass-btn" id="registerSubmitBtn"><i class="fas fa-user-plus"></i> Crear cuenta</button>
+                <div class="glass-switch">Ya tienes cuenta? <a id="switchToLogin">Inicia sesion</a></div>
             </form>
         </div>
     </div>
