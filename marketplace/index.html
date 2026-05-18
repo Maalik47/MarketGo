@@ -1031,7 +1031,7 @@
                 var catIcon = categoryIcons[p.category] || 'fas fa-tag';
                 var imgHtml;
                 if (imgUrl) {
-                    imgHtml = '<img src="' + imgUrl + '" alt="' + p.name + '" loading="lazy">';
+                    imgHtml = '<img src="' + imgUrl + '" alt="' + p.name + '" loading="lazy" onerror="this.onerror=null;this.parentNode.innerHTML=\'<div class=\\\\\'card-img-fallback\\\\\'><i class=\\\\\'' + catIcon + ' card-img-icon\\\\\'></i></div>\'">';
                 } else {
                     imgHtml = '<div class="card-img-fallback"><i class="' + catIcon + ' card-img-icon"></i></div>';
                 }
@@ -1046,8 +1046,12 @@
         var currentDetailProduct = null;
         function openProductDetail(p) {
             currentDetailProduct = p;
-            document.getElementById('detailImage').querySelector('img').src = p.image || 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=600&h=400&fit=crop';
-            document.getElementById('detailImage').querySelector('img').alt = p.name;
+            var detailImg = document.getElementById('detailImage').querySelector('img');
+            detailImg.onerror = null;
+            detailImg.src = p.image || '';
+            detailImg.alt = p.name;
+            detailImg.style.display = '';
+            detailImg.onerror = function() { this.onerror = null; this.style.display = 'none'; this.parentNode.innerHTML = '<div class="card-img-fallback" style="height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated);"><i class="fas fa-image" style="font-size:3rem;color:var(--text-tertiary);opacity:0.5;"></i></div>'; };
             document.getElementById('detailCategory').textContent = p.category;
             document.getElementById('detailName').textContent = p.name;
             document.getElementById('detailPrice').textContent = formatCOP(p.price);

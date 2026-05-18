@@ -155,14 +155,14 @@ app.post('/api/products', auth, async (req, res) => {
     if (useSupabase) {
       const { data, error } = await supabase.from('products').insert({
         user_id: req.user.id, name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc,
-        image: req.body.image || null,
+        image: req.body.image || null, seller_name: req.user.name,
         views: Math.floor(Math.random() * 400) + 10, simulated_sales: Math.floor(Math.random() * 30)
       }).select().single();
       if (error) throw error;
       res.json(mapProduct(data));
     } else {
       const products = readJSON('products.json');
-      const product = { id: Date.now(), userId: req.user.id, name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc, image: req.body.image || null, views: Math.floor(Math.random() * 400) + 10, simulatedSales: Math.floor(Math.random() * 30), createdAt: new Date().toISOString() };
+      const product = { id: Date.now(), userId: req.user.id, name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc, image: req.body.image || null, sellerName: req.user.name, views: Math.floor(Math.random() * 400) + 10, simulatedSales: Math.floor(Math.random() * 30), createdAt: new Date().toISOString() };
       products.push(product);
       writeJSON('products.json', products);
       res.json(product);
