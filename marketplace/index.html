@@ -240,6 +240,9 @@
                 align-items: flex-start; padding-top: 10px;
             }
         }
+        .modal-overlay.product-detail-overlay {
+            backdrop-filter: none;
+        }
         .product-detail-overlay .detail-close {
             position: absolute; top: 16px; right: 16px; z-index: 10;
             width: 36px; height: 36px; border-radius: 50%; border: none;
@@ -249,10 +252,11 @@
         }
         .product-detail-overlay .detail-close:hover { background: rgba(0,0,0,0.7); }
         .detail-layout {
-            display: grid; grid-template-columns: 1fr 1fr; min-height: 400px;
+            display: grid; grid-template-columns: 1fr 1fr;
         }
         .detail-image {
             position: relative; overflow: hidden; background: var(--bg-elevated);
+            max-height: 380px;
         }
         .detail-image img {
             width: 100%; height: 100%; object-fit: cover;
@@ -966,7 +970,7 @@
         function setAuth(token, user) { localStorage.setItem('mg_token', token); localStorage.setItem('mg_user', JSON.stringify(user)); }
         function clearAuth() { localStorage.removeItem('mg_token'); localStorage.removeItem('mg_user'); }
         function isLoggedIn() { return !!getToken(); }
-        async function apiCall(path, options) { options = options || {}; const token = getToken(); const headers = { 'Content-Type': 'application/json' }; if (token) headers['Authorization'] = 'Bearer ' + token; if (options.headers) Object.assign(headers, options.headers); const res = await fetch(API + path, { method: options.method, headers: headers, body: options.body }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Error del servidor'); return data; }
+        async function apiCall(path, options) { options = options || {}; const token = getToken(); const headers = { 'Content-Type': 'application/json' }; if (token) headers['Authorization'] = 'Bearer ' + token; if (options.headers) Object.assign(headers, options.headers); const res = await fetch(API + path, { method: options.method, headers: headers, body: options.body }); const text = await res.text(); let data; try { data = JSON.parse(text); } catch (e) { throw new Error('Respuesta del servidor inválida'); } if (!res.ok) throw new Error(data.error || 'Error del servidor'); return data; }
         let cart = []; let cartOpen = false; let activeFilter = 'all'; let searchQuery = '';
         let priceMin = ''; let priceMax = ''; let sortBy = 'default'; let offersOnly = false;
         const categoryIcons = { all: 'fas fa-th-large', 'Tecnología': 'fas fa-microchip', Moda: 'fas fa-tshirt', Hogar: 'fas fa-home', Deportes: 'fas fa-running', Salud: 'fas fa-heartbeat', Libros: 'fas fa-book' };
@@ -1054,7 +1058,7 @@
             currentDetailProduct = p;
             var detailImg = document.getElementById('detailImage').querySelector('img');
             detailImg.onerror = null;
-            detailImg.src = p.image || '';
+            detailImg.src = (p.image || '').replace('w=600&h=400', 'w=800&h=600');
             detailImg.alt = p.name;
             detailImg.style.display = '';
             var detailFallback = document.getElementById('detailImgFallback');

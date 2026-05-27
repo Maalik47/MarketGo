@@ -128,7 +128,7 @@ app.get('/api/products/public', async (req, res) => {
     if (useSupabase) {
       const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
       if (error) throw error;
-      res.json(await Promise.all(data.map(mapProduct)));
+      res.json(data.map(mapProduct));
     } else {
       res.json(readJSON('products.json'));
     }
@@ -140,7 +140,7 @@ app.get('/api/products', auth, async (req, res) => {
     if (useSupabase) {
       const { data, error } = await supabase.from('products').select('*').eq('user_id', req.user.id).order('created_at', { ascending: false });
       if (error) throw error;
-      res.json(await Promise.all(data.map(mapProduct)));
+      res.json(data.map(mapProduct));
     } else {
       res.json(readJSON('products.json').filter(p => p.userId === req.user.id));
     }
@@ -159,7 +159,7 @@ app.post('/api/products', auth, async (req, res) => {
         views: Math.floor(Math.random() * 400) + 10, simulated_sales: Math.floor(Math.random() * 30)
       }).select().single();
       if (error) throw error;
-      res.json(await mapProduct(data));
+      res.json(mapProduct(data));
     } else {
       const products = readJSON('products.json');
       const product = { id: Date.now(), userId: req.user.id, name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc, image: req.body.image || null, sellerName: req.user.name, views: Math.floor(Math.random() * 400) + 10, simulatedSales: Math.floor(Math.random() * 30), createdAt: new Date().toISOString() };
@@ -178,7 +178,7 @@ app.put('/api/products/:id', auth, async (req, res) => {
     if (useSupabase) {
       const { data, error } = await supabase.from('products').update({ name, category, price: parseFloat(price), stock: parseInt(stock) || 1, desc, image: req.body.image || null }).eq('id', id).eq('user_id', req.user.id).select().single();
       if (error || !data) return res.status(404).json({ error: 'Producto no encontrado' });
-      res.json(await mapProduct(data));
+      res.json(mapProduct(data));
     } else {
       const products = readJSON('products.json');
       const idx = products.findIndex(p => p.id === id && p.userId === req.user.id);
@@ -209,23 +209,13 @@ app.delete('/api/products/:id', auth, async (req, res) => {
 });
 
 // Map Supabase column names -> camelCase (same as JSON fallback)
-async function mapProduct(p) {
-  var sellerName = p.seller_name;
-  if (!sellerName) {
-    if (p.user_id && p.user_id > 0) {
-      try {
-        var { data: user } = await supabase.from('users').select('name').eq('id', p.user_id).maybeSingle();
-        if (user) sellerName = user.name;
-      } catch (e) { /* ignore */ }
-    } else {
-      sellerName = 'MarketGo';
-    }
-  }
+function mapProduct(p) {
   return {
     id: p.id, userId: p.user_id, name: p.name, category: p.category,
     price: p.price, stock: p.stock, desc: p.desc,
     image: p.image, views: p.views, simulatedSales: p.simulated_sales,
-    sellerName: sellerName, createdAt: p.created_at
+    sellerName: p.seller_name || (p.user_id === 0 ? 'MarketGo' : null),
+    createdAt: p.created_at
   };
 }
 

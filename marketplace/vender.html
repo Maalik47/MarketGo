@@ -1330,7 +1330,9 @@
             const headers = { 'Content-Type': 'application/json', ...options.headers };
             if (token) headers['Authorization'] = 'Bearer ' + token;
             const res = await fetch(API + path, { ...options, headers });
-            const data = await res.json();
+            const text = await res.text();
+            let data;
+            try { data = JSON.parse(text); } catch (e) { throw new Error('Respuesta del servidor inválida (código ' + res.status + ')'); }
             if (!res.ok) throw new Error(data.error || 'Error del servidor');
             return data;
         }
@@ -1507,10 +1509,27 @@
             const imageInput = document.getElementById('prodImage');
             var image = null;
             if (imageInput.files.length > 0) {
+                var file = imageInput.files[0];
                 image = await new Promise(function(resolve) {
                     var reader = new FileReader();
-                    reader.onload = function(ev) { resolve(ev.target.result); };
-                    reader.readAsDataURL(imageInput.files[0]);
+                    reader.onload = function(ev) {
+                        var img = new Image();
+                        img.onload = function() {
+                            var maxW = 800, maxH = 600;
+                            var w = img.width, h = img.height;
+                            if (w > maxW || h > maxH) {
+                                var ratio = Math.min(maxW / w, maxH / h);
+                                w = Math.round(w * ratio); h = Math.round(h * ratio);
+                            }
+                            var c = document.createElement('canvas');
+                            c.width = w; c.height = h;
+                            var ctx = c.getContext('2d');
+                            ctx.drawImage(img, 0, 0, w, h);
+                            resolve(c.toDataURL('image/jpeg', 0.8));
+                        };
+                        img.src = ev.target.result;
+                    };
+                    reader.readAsDataURL(file);
                 });
             }
             if (!name || !category || !price || !desc) { showToast('Completa todos los campos obligatorios'); return; }
